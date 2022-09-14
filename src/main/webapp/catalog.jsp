@@ -1,9 +1,9 @@
 <%@ page import="dao.implementation.BookDaoImpl" %>
 <%@ page import="java.util.List" %>
-<%@ page import="entity.BookEntity" %>
+<%@ page import="entity.Book" %>
 <%
   BookDaoImpl bookDaoImpl = new BookDaoImpl();
-  List<BookEntity> list = bookDaoImpl.getAll();
+  List<Book> list = bookDaoImpl.getAll();
 %>
 
 
@@ -46,7 +46,7 @@
       </ul>
       <li class="nav-item dropdown d-flex">
       <a class="nav-link dropdown-toggle" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="images/person-icon.png" width="30px" style="border-radius: 50%;" alt="">
+        <img src="images/personalInfo-icon.png" width="30px" style="border-radius: 50%;" alt="">
         Name
       </a>
       <ul class="dropdown-menu">
@@ -100,7 +100,7 @@
 <div class="container">
       <%
           if(!list.isEmpty()){
-            for (BookEntity book : list) {
+            for (Book book : list) {
       %>
   <div class="card my-3">
     <div class="row g-0">
@@ -110,7 +110,7 @@
       <div class="col-md-8">
         <div class="card-body">
           <h4 class="card-title"><%=book.getName()%></h4>
-          <h6 class="author">Author: <%=book.getAuthor_id()%></h6>
+          <h6 class="author">Author: <%=book.getAuthor().getAuthorName()%></h6>
           <h6 class="publication">Publication: <%=book.getPublication()%></h6>
           <h6 class="publication-date">Date Of Publication: <%=book.getDateOfPublication()%></h6>
           <p class="card-text"><%=book.getDescription()%></p>

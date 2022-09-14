@@ -1,9 +1,9 @@
 package dao;
 
-import entity.BookEntity;
+import entity.Book;
 
 import java.util.List;
 
-public interface BookDAO extends DAO<BookEntity> {
-    List<BookEntity> findByName(String name);
+public interface BookDAO extends DAO<Book> {
+    List<Book> findByName(String name);
 }

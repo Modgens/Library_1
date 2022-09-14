@@ -1,8 +1,8 @@
 package entity;
 
-public class UserEntity extends PersonEntity{
+public class User {
     private int id;
-    private int person_id;
+    private PersonalInfo personalInfo;
     private String email;
 
     public int getId() {
@@ -13,12 +13,12 @@ public class UserEntity extends PersonEntity{
         this.id = id;
     }
 
-    public int getPerson_id() {
-        return person_id;
+    public PersonalInfo getPerson() {
+        return personalInfo;
     }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
+    public void setPerson(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
     }
 
     public String getEmail() {
@@ -31,9 +31,9 @@ public class UserEntity extends PersonEntity{
 
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "User{" +
                 "id=" + id +
-                ", person_id=" + person_id +
+                ", person=" + personalInfo.getLogin() +
                 ", email='" + email + '\'' +
                 '}';
     }

@@ -1,20 +1,18 @@
-package com.sample;
+package entity;
 
 
 public class Author {
 
-  private long id;
+  private int id;
   private String authorName;
 
-
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
-
 
   public String getAuthorName() {
     return authorName;

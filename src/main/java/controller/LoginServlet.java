@@ -1,6 +1,6 @@
 package controller;
 
-import entity.UserEntity;
+import entity.User;
 import dao.implementation.UserDaoImpl;
 
 import javax.servlet.*;
@@ -19,9 +19,9 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
         RequestDispatcher dispatcher = null;
 
-        UserEntity userEntity = new UserEntity();
+        User userEntity = new User();
         userEntity.setEmail(email);
-        userEntity.setPassword(password);
+        //userEntity.setPassword(password);
 
         UserDaoImpl userDaoImpl = new UserDaoImpl();
         //userDaoImpl.validate(userEntity);

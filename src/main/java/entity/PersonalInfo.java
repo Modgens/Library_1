@@ -1,6 +1,6 @@
 package entity;
 
-public class PersonEntity {
+public class PersonalInfo {
     private int id;
     private String login;
     private String password;
@@ -49,7 +49,7 @@ public class PersonEntity {
 
     @Override
     public String toString() {
-        return "PersonEntity{" +
+        return "PersonalInfo{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +

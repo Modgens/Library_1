@@ -1,7 +1,7 @@
 package dao;
 
-import entity.UserEntity;
+import entity.User;
 
-public interface UserDAO extends DAO<UserEntity>{
-    UserEntity findByName(String name);
+public interface UserDAO extends DAO<User>{
+    User findByLogin(String login);
 }

@@ -1,27 +1,24 @@
-package com.sample;
+package entity;
 
 
 public class Librarian {
 
-  private long id;
-  private long personId;
+  private int id;
+  private PersonalInfo personalInfo;
 
-
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-
-  public long getPersonId() {
-    return personId;
+  public PersonalInfo getPerson() {
+    return personalInfo;
   }
 
-  public void setPersonId(long personId) {
-    this.personId = personId;
+  public void setPerson(PersonalInfo personalInfo) {
+    this.personalInfo = personalInfo;
   }
-
 }

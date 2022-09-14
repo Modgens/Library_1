@@ -1,8 +1,7 @@
 package dao.implementation;
 
-import dao.PersonDAO;
-import entity.BookEntity;
-import entity.PersonEntity;
+import dao.PersonalInfoDAO;
+import entity.PersonalInfo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,29 +12,28 @@ import java.util.List;
 
 import static util.Connector.getConnection;
 
-public class PersonDaoImpl implements PersonDAO {
+public class PersonalInfoDaoImpl implements PersonalInfoDAO {
 
-    private void setAllInEntity(PersonEntity person, ResultSet rs) throws SQLException {
-        person.setId(rs.getInt("id"));
-        person.setPassword(rs.getString("password"));
-        person.setFirstName(rs.getString("first_name"));
-        person.setLastName(rs.getString("last_name"));
-        person.setLogin(rs.getString("login"));
+    private void setAllInEntity(PersonalInfo personalInfo, ResultSet rs) throws SQLException {
+        personalInfo.setId(rs.getInt("id"));
+        personalInfo.setPassword(rs.getString("password"));
+        personalInfo.setFirstName(rs.getString("first_name"));
+        personalInfo.setLastName(rs.getString("last_name"));
+        personalInfo.setLogin(rs.getString("login"));
     }
 
     @Override
-    public List<PersonEntity> getAll(){
-
-        List<PersonEntity> list = new ArrayList<>();
-        String sql = "select * from person";
+    public List<PersonalInfo> getAll(){
+        List<PersonalInfo> list = new ArrayList<>();
+        String sql = "select * from personal_info";
         PreparedStatement ps;
         try(Connection con = getConnection()) {
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                PersonEntity person = new PersonEntity();
-                setAllInEntity(person, rs);
-                list.add(person);
+                PersonalInfo personalInfo = new PersonalInfo();
+                setAllInEntity(personalInfo, rs);
+                list.add(personalInfo);
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -44,34 +42,34 @@ public class PersonDaoImpl implements PersonDAO {
     }
 
     @Override
-    public PersonEntity get(int id) {
-        PersonEntity person = new PersonEntity();
+    public PersonalInfo get(int id) {
+        PersonalInfo personalInfo = new PersonalInfo();
         try(Connection con = getConnection()) {
-            String sql = "SELECT * FROM person WHERE id = ?";
+            String sql = "SELECT * FROM personal_info WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                setAllInEntity(person, rs);
+                setAllInEntity(personalInfo, rs);
             }
             rs.close();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return person;
+        return personalInfo;
     }
 
 
     @Override
-    public void insert(PersonEntity person) {
+    public void insert(PersonalInfo personalInfo) {
         try(Connection con = getConnection()) {
-            String sql = "INSERT INTO person (first_name, last_name, login, password) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO personal_info (first_name, last_name, login, password) VALUES(?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, person.getFirstName());
-            ps.setString(2, person.getLastName());
-            ps.setString(3, person.getLogin());
-            ps.setString(4, person.getPassword());
+            ps.setString(1, personalInfo.getFirstName());
+            ps.setString(2, personalInfo.getLastName());
+            ps.setString(3, personalInfo.getLogin());
+            ps.setString(4, personalInfo.getPassword());
             ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -79,15 +77,15 @@ public class PersonDaoImpl implements PersonDAO {
     }
 
     @Override
-    public void update(PersonEntity person) {
+    public void update(PersonalInfo personalInfo) {
         try(Connection con = getConnection()) {
-            String sql = "UPDATE person SET first_name=?, last_name=?, login=?, password=? WHERE id=?";
+            String sql = "UPDATE personal_info SET first_name=?, last_name=?, login=?, password=? WHERE id=?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, person.getFirstName());
-            ps.setString(2, person.getLastName());
-            ps.setString(3, person.getLogin());
-            ps.setString(4, person.getPassword());
-            ps.setInt(5, person.getId());
+            ps.setString(1, personalInfo.getFirstName());
+            ps.setString(2, personalInfo.getLastName());
+            ps.setString(3, personalInfo.getLogin());
+            ps.setString(4, personalInfo.getPassword());
+            ps.setInt(5, personalInfo.getId());
             ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -95,11 +93,11 @@ public class PersonDaoImpl implements PersonDAO {
     }
 
     @Override
-    public void delete(PersonEntity person) {
+    public void delete(PersonalInfo personalInfo) {
         try(Connection con = getConnection()) {
-            String sql = "DELETE FROM person WHERE id = ?";
+            String sql = "DELETE FROM personal_info WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, person.getId());
+            ps.setInt(1, personalInfo.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -108,22 +106,22 @@ public class PersonDaoImpl implements PersonDAO {
     }
 
     @Override
-    public PersonEntity findByLoginAndPassword(String login, String password) {
-        PersonEntity person = new PersonEntity();
+    public PersonalInfo findByLoginAndPassword(String login, String password) {
+        PersonalInfo personalInfo = new PersonalInfo();
         try(Connection con = getConnection()) {
-            String sql = "SELECT * FROM person WHERE login = ? AND password = ?";
+            String sql = "SELECT * FROM personal_info WHERE login = ? AND password = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, login);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                setAllInEntity(person, rs);
+                setAllInEntity(personalInfo, rs);
             }
             rs.close();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return person;
+        return personalInfo;
     }
 }

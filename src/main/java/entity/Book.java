@@ -1,22 +1,30 @@
 package entity;
 
-public class BookEntity {
+public class Book {
     private int id;
     private String name;
-    private int author_id;
     private String publication;
     private String dateOfPublication;
     private int count;
     private String description;
     private String imgName;
-    private int genre_id;
+    private Author author;
+    private Genre genre;
 
-    public int getGenre_id() {
-        return genre_id;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setGenre_id(int genre_id) {
-        this.genre_id = genre_id;
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public String getImgName() {
@@ -59,14 +67,6 @@ public class BookEntity {
         this.name = name;
     }
 
-    public int getAuthor_id() {
-        return author_id;
-    }
-
-    public void setAuthor_id(int author_id) {
-        this.author_id = author_id;
-    }
-
     public String getPublication() {
         return publication;
     }
@@ -83,5 +83,18 @@ public class BookEntity {
         this.dateOfPublication = dateOfPublication;
     }
 
-
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", publication='" + publication + '\'' +
+                ", dateOfPublication='" + dateOfPublication + '\'' +
+                ", count=" + count +
+                ", description='" + description + '\'' +
+                ", imgName='" + imgName + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                '}';
+    }
 }

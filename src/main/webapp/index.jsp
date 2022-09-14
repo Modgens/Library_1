@@ -36,7 +36,7 @@
       </ul>
       <div class="nav-item dropdown d-flex">
       <a class="nav-link dropdown-toggle" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="images/person-icon.png" width="30px"  style="border-radius: 50%;" alt="">
+        <img src="images/personalInfo-icon.png" width="30px"  style="border-radius: 50%;" alt="">
         Name
       </a>
       <ul class="dropdown-menu">

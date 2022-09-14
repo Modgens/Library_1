@@ -1,56 +1,52 @@
-package com.sample;
+package entity;
 
+import java.sql.Date;
 
 public class UserOrders {
 
-  private long id;
-  private long userId;
-  private long bookId;
-  private java.sql.Date orderDate;
-  private java.sql.Date dateToReturn;
+  private int id;
+  private User user;
+  private Book book;
+  private Date orderDate;
+  private Date dateToReturn;
 
-
-  public long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-
-  public long getUserId() {
-    return userId;
+  public User getUser() {
+    return user;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public void setUser(User user) {
+    this.user = user;
   }
 
-
-  public long getBookId() {
-    return bookId;
+  public Book getBook() {
+    return book;
   }
 
-  public void setBookId(long bookId) {
-    this.bookId = bookId;
+  public void setBook(Book book) {
+    this.book = book;
   }
 
-
-  public java.sql.Date getOrderDate() {
+  public Date getOrderDate() {
     return orderDate;
   }
 
-  public void setOrderDate(java.sql.Date orderDate) {
+  public void setOrderDate(Date orderDate) {
     this.orderDate = orderDate;
   }
 
-
-  public java.sql.Date getDateToReturn() {
+  public Date getDateToReturn() {
     return dateToReturn;
   }
 
-  public void setDateToReturn(java.sql.Date dateToReturn) {
+  public void setDateToReturn(Date dateToReturn) {
     this.dateToReturn = dateToReturn;
   }
 
