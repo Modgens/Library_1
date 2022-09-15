@@ -14,12 +14,12 @@ import static util.Connector.getConnection;
 public class AuthorDaoImpl implements AuthorDAO {
 
     @Override
-    public Author get(int id) {
+    public Author get(long id) {
         Author author = new Author();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM author WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 author.setId(rs.getInt("id"));
@@ -43,7 +43,7 @@ public class AuthorDaoImpl implements AuthorDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Author author = new Author();
-                author.setId(rs.getInt("id"));
+                author.setId(rs.getLong("id"));
                 author.setAuthorName(rs.getString("author_name"));
                 list.add(author);
             }
@@ -60,7 +60,7 @@ public class AuthorDaoImpl implements AuthorDAO {
         try(Connection con = getConnection()) {
             String sql = "INSERT INTO author (id, author_name) VALUES(?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, author.getId());
+            ps.setLong(1, author.getId());
             ps.setString(2, author.getAuthorName());
             ps.executeUpdate();
             ps.close();
@@ -75,7 +75,7 @@ public class AuthorDaoImpl implements AuthorDAO {
             String sql = "UPDATE author SET author_name = ? WHERE id=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, author.getAuthorName());
-            ps.setInt(2, author.getId());
+            ps.setLong(2, author.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -88,7 +88,7 @@ public class AuthorDaoImpl implements AuthorDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM author WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, author.getId());
+            ps.setLong(1, author.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {

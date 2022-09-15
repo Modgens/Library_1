@@ -13,32 +13,25 @@ public class
 BookDaoImpl implements BookDAO {
 
     private void setAllInEntity(Book book, ResultSet rs) throws SQLException {
-        int genreId;
-        int authorId;
-
-        authorId = rs.getInt("author_id");
-        genreId = rs.getInt("genre_id");
-
-        book.setId(rs.getInt("id"));
+        book.setId(rs.getLong("id"));
         book.setCount(rs.getInt("count"));
         book.setName(rs.getString("title"));
         book.setImgName(rs.getString("img_name"));
         book.setDescription(rs.getString("description"));
         book.setPublication(rs.getString("publication"));
         book.setDateOfPublication(rs.getString("year_of_publication"));
-
-        book.setAuthor(new AuthorDaoImpl().get(authorId));
-        book.setGenre(new GenreDaoImpl().get(genreId));
+        book.setAuthorId(rs.getLong("author_id"));
+        book.setGenreId(rs.getLong("genre_id"));
     }
     private void setAllInPS(PreparedStatement ps, Book book) throws SQLException {
         ps.setString(1, book.getName());
-        ps.setInt(2, book.getAuthor().getId());
+        ps.setLong(2, book.getAuthorId());
         ps.setString(3, book.getDescription());
         ps.setString(4, book.getDateOfPublication());
-        ps.setInt(5, book.getCount());
+        ps.setLong(5, book.getCount());
         ps.setString(6, book.getPublication());
         ps.setString(7, book.getImgName());
-        ps.setInt(8, book.getGenre().getId());
+        ps.setLong(8, book.getGenreId());
     }
 
     @Override
@@ -82,12 +75,12 @@ BookDaoImpl implements BookDAO {
     }
 
     @Override
-    public Book get(int id) {
+    public Book get(long id) {
         Book book = new Book();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 setAllInEntity(book, rs);//to escape duplication
@@ -107,7 +100,6 @@ BookDaoImpl implements BookDAO {
             String sql = "INSERT INTO book (title, author_id, description, year_of_publication, count, publication, img_name, genre_id) VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
-            ps.setInt(8, book.getGenre().getId());
             ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -120,7 +112,7 @@ BookDaoImpl implements BookDAO {
             String sql = "UPDATE book SET title=?, author_id=?, description=?, year_of_publication=?, count=?, publication=?, img_name=?, genre_id=? WHERE id=?";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
-            ps.setInt(9, book.getId());
+            ps.setLong(9, book.getId());
             ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -132,7 +124,7 @@ BookDaoImpl implements BookDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM user WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, book.getId());
+            ps.setLong(1, book.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {

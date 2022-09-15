@@ -15,15 +15,15 @@ import static util.Connector.getConnection;
 
 public class GenreDaoImpl implements GenreDAO {
     @Override
-    public Genre get(int id) {
+    public Genre get(long id) {
         Genre genre = new Genre();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM genre WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                genre.setId(rs.getInt("id"));
+                genre.setId(rs.getLong("id"));
                 genre.setGenreName(rs.getString("genre_name"));
             }
             rs.close();
@@ -44,7 +44,7 @@ public class GenreDaoImpl implements GenreDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Genre genre = new Genre();
-                genre.setId(rs.getInt("id"));
+                genre.setId(rs.getLong("id"));
                 genre.setGenreName(rs.getString("genre_name"));
                 list.add(genre);
             }
@@ -75,7 +75,7 @@ public class GenreDaoImpl implements GenreDAO {
             String sql = "UPDATE genre SET genre_name = ? WHERE id=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, genre.getGenreName());
-            ps.setInt(2, genre.getId());
+            ps.setLong(2, genre.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -88,7 +88,7 @@ public class GenreDaoImpl implements GenreDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM genre WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, genre.getId());
+            ps.setLong(1, genre.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {

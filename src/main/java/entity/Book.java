@@ -1,30 +1,30 @@
 package entity;
 
 public class Book {
-    private int id;
+    private long id;
     private String name;
     private String publication;
     private String dateOfPublication;
     private int count;
     private String description;
     private String imgName;
-    private Author author;
-    private Genre genre;
+    private long authorId;
+    private long genreId;
 
-    public Author getAuthor() {
-        return author;
+    public long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public long getGenreId() {
+        return genreId;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreId(long genreId) {
+        this.genreId = genreId;
     }
 
     public String getImgName() {
@@ -43,11 +43,11 @@ public class Book {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -93,8 +93,8 @@ public class Book {
                 ", count=" + count +
                 ", description='" + description + '\'' +
                 ", imgName='" + imgName + '\'' +
-                ", author=" + author +
-                ", genre=" + genre +
+                ", author=" + authorId +
+                ", genre=" + genreId +
                 '}';
     }
 }

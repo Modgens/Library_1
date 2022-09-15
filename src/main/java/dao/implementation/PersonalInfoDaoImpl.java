@@ -15,7 +15,7 @@ import static util.Connector.getConnection;
 public class PersonalInfoDaoImpl implements PersonalInfoDAO {
 
     private void setAllInEntity(PersonalInfo personalInfo, ResultSet rs) throws SQLException {
-        personalInfo.setId(rs.getInt("id"));
+        personalInfo.setId(rs.getLong("id"));
         personalInfo.setPassword(rs.getString("password"));
         personalInfo.setFirstName(rs.getString("first_name"));
         personalInfo.setLastName(rs.getString("last_name"));
@@ -42,12 +42,12 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
     }
 
     @Override
-    public PersonalInfo get(int id) {
+    public PersonalInfo get(long id) {
         PersonalInfo personalInfo = new PersonalInfo();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM personal_info WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 setAllInEntity(personalInfo, rs);
@@ -85,7 +85,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             ps.setString(2, personalInfo.getLastName());
             ps.setString(3, personalInfo.getLogin());
             ps.setString(4, personalInfo.getPassword());
-            ps.setInt(5, personalInfo.getId());
+            ps.setLong(5, personalInfo.getId());
             ps.executeUpdate();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -97,7 +97,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM personal_info WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, personalInfo.getId());
+            ps.setLong(1, personalInfo.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -124,4 +124,44 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
         }
         return personalInfo;
     }
+
+    @Override
+    public PersonalInfo findByLogin(String login) {
+        PersonalInfo personalInfo = new PersonalInfo();
+        try(Connection con = getConnection()) {
+            String sql = "SELECT * FROM personal_info WHERE login = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, login);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                setAllInEntity(personalInfo, rs);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return personalInfo;
+    }
+
+    @Override
+    public long getId(String login) {
+        long id=0;
+        try(Connection con = getConnection()) {
+            String sql = "SELECT id FROM personal_info WHERE login = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, login);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                id = rs.getLong("id");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
+
 }

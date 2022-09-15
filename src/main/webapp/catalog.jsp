@@ -1,12 +1,15 @@
 <%@ page import="dao.implementation.BookDaoImpl" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Book" %>
+<%@ page import="dao.implementation.AuthorDaoImpl" %>
+<%@ page import="dao.implementation.GenreDaoImpl" %>
 <%
   BookDaoImpl bookDaoImpl = new BookDaoImpl();
+  AuthorDaoImpl authorDao = new AuthorDaoImpl();
+  GenreDaoImpl genreDao = new GenreDaoImpl();
   List<Book> list = bookDaoImpl.getAll();
+  System.out.println(list);
 %>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -46,7 +49,7 @@
       </ul>
       <li class="nav-item dropdown d-flex">
       <a class="nav-link dropdown-toggle" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="images/personalInfo-icon.png" width="30px" style="border-radius: 50%;" alt="">
+        <img src="images/person-icon.png" width="30px" style="border-radius: 50%;" alt="">
         Name
       </a>
       <ul class="dropdown-menu">
@@ -54,7 +57,6 @@
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="#">Sign Out</a></li>
       </ul>
-      </li>
     </div>
   </div>
 </nav>
@@ -110,7 +112,8 @@
       <div class="col-md-8">
         <div class="card-body">
           <h4 class="card-title"><%=book.getName()%></h4>
-          <h6 class="author">Author: <%=book.getAuthor().getAuthorName()%></h6>
+          <h6 class="author">Author: <%=authorDao.get(book.getAuthorId()).getAuthorName()%></h6>
+          <h6 class="author">Genre: <%=genreDao.get(book.getGenreId()).getGenreName()%></h6>
           <h6 class="publication">Publication: <%=book.getPublication()%></h6>
           <h6 class="publication-date">Date Of Publication: <%=book.getDateOfPublication()%></h6>
           <p class="card-text"><%=book.getDescription()%></p>

@@ -17,7 +17,7 @@
         <div class="text-center">
             <form method="post" action="servlet" style="max-width:480px;margin:auto;">
                 <h1 class="mb-4 mt-5">Welcome To Library</h1>
-                <input type="email" class="form-control mb-2" placeholder="Email" name="email" maxlength="30" required autofocus>
+                <input type="text" class="form-control mb-2" placeholder="Login" name="login" maxlength="30" required autofocus>
                 <input type="password" class="form-control mb-2" placeholder="Password" name="password" required autofocus>
                 <input type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" >
             </form>

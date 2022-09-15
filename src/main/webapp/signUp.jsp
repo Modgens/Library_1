@@ -12,12 +12,13 @@
             <input type="text" class="form-control mb-2" placeholder="First name" name="first_name" maxlength="30" required autofocus>
             <input type="text" class="form-control mb-2" placeholder="Last name" name="last_name" maxlength="30" required autofocus>
             <input type="email" class="form-control mb-2" placeholder="Email" name="email" maxlength="30" required autofocus>
+            <input type="text" class="form-control mb-2" placeholder="Login" name="login" maxlength="30" required autofocus>
             <input type="password" id="password" class="form-control mb-2" placeholder="Password" name="password" required autofocus>
             <input type="password" id="confirm_password" class="form-control mb-2" placeholder="Repeat password" name="r_password" required autofocus>
             <div id='message' style="text-align: left"></div>
             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign up">
             <script>$('#password, #confirm_password').on('keyup', function () {
-                if ($('#password').val() == $('#confirm_password').val()) {
+                if ($('#password').val() === $('#confirm_password').val()) {
                     $('#message').html('Matching').css('color', 'green');
                 } else
                     $('#message').html('Not Matching').css('color', 'red');
@@ -37,7 +38,7 @@
             swal("Congrats", "Account Created Successfully", "success");
         }
         else if(status=="failed"){
-            swal("Sorry", "This Email Is Already Registered", "error");
+            swal("Sorry", "This Login Is Already Registered", "error");
         }
     </script>
 </body>

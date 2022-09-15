@@ -1,7 +1,10 @@
 package controller;
 
+import dao.implementation.PersonalInfoDaoImpl;
+import entity.PersonalInfo;
 import entity.User;
 import dao.implementation.UserDaoImpl;
+import service.RegisterService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -15,23 +18,6 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        RequestDispatcher dispatcher = null;
-
-        User userEntity = new User();
-        userEntity.setEmail(email);
-        //userEntity.setPassword(password);
-
-        UserDaoImpl userDaoImpl = new UserDaoImpl();
-        //userDaoImpl.validate(userEntity);
-
-        //if(userDaoImpl.validate(userEntity)){
-            dispatcher = request.getRequestDispatcher("index.jsp");
-        //}else{
-            request.setAttribute("status", "failed");
-            dispatcher = request.getRequestDispatcher("login.jsp");
-        //}
-        dispatcher.forward(request,response);
+        new RegisterService().loginService(request, response);
     }
 }

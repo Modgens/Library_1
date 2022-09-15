@@ -2,7 +2,6 @@ package dao.implementation;
 
 import dao.LibrarianDAO;
 import dao.PersonalInfoDAO;
-import entity.Admin;
 import entity.Librarian;
 
 import java.sql.Connection;
@@ -16,17 +15,17 @@ import static util.Connector.getConnection;
 
 public class LibrarianDaoImpl implements LibrarianDAO {
     @Override
-    public Librarian get(int id) {
+    public Librarian get(long id) {
         Librarian librarian = new Librarian();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM librarian WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             PersonalInfoDAO personalInfoDAO = new PersonalInfoDaoImpl();
             if(rs.next()){
-                librarian.setId(rs.getInt("id"));
-                librarian.setPerson(personalInfoDAO.get(rs.getInt("person_id")));
+                librarian.setId(rs.getLong("id"));
+                librarian.setPersonId(rs.getLong("person_id"));
             }
             rs.close();
             ps.close();
@@ -46,8 +45,8 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Librarian librarian = new Librarian();
-                librarian.setId(rs.getInt("id"));
-                librarian.setPerson(new PersonalInfoDaoImpl().get(rs.getInt("person_id")));//get personal info too
+                librarian.setId(rs.getLong("id"));
+                librarian.setPersonId(rs.getLong("person_id"));
                 list.add(librarian);
             }
             ps.close();
@@ -62,8 +61,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
         try(Connection con = getConnection()) {
             String sql = "INSERT INTO librarian (person_id) VALUES(?);";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, librarian.getPerson().getId());
-            new PersonalInfoDaoImpl().insert(librarian.getPerson());//insert new personal info in db
+            ps.setLong(1, librarian.getPersonId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -76,9 +74,8 @@ public class LibrarianDaoImpl implements LibrarianDAO {
         try(Connection con = getConnection()) {
             String sql = "UPDATE librarian SET person_id = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, librarian.getPerson().getId());
-            ps.setInt(2, librarian.getId());
-            new PersonalInfoDaoImpl().update(librarian.getPerson());//update personal info in db too
+            ps.setLong(1, librarian.getPersonId());
+            ps.setLong(2, librarian.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -91,9 +88,8 @@ public class LibrarianDaoImpl implements LibrarianDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM librarian WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, librarian.getId());
+            ps.setLong(1, librarian.getId());
             ps.executeUpdate();
-            new PersonalInfoDaoImpl().delete(librarian.getPerson());//delete personal info too
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

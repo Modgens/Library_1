@@ -1,17 +1,17 @@
 package entity;
 
 public class PersonalInfo {
-    private int id;
+    private long id;
     private String login;
     private String password;
     private String firstName;
     private String lastName;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

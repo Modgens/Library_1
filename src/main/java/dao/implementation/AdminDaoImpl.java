@@ -3,7 +3,6 @@ package dao.implementation;
 import dao.AdminDAO;
 import dao.PersonalInfoDAO;
 import entity.Admin;
-import entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,17 +15,17 @@ import static util.Connector.getConnection;
 
 public class AdminDaoImpl implements AdminDAO {
     @Override
-    public Admin get(int id) {
+    public Admin get(long id) {
         Admin admin = new Admin();
         try(Connection con = getConnection()) {
             String sql = "SELECT * FROM admin WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             PersonalInfoDAO personalInfoDAO = new PersonalInfoDaoImpl();
             if(rs.next()){
                 admin.setId(rs.getInt("id"));
-                admin.setPerson(personalInfoDAO.get(rs.getInt("person_id")));
+                admin.setPersonId(rs.getInt("person_id"));
             }
             rs.close();
             ps.close();
@@ -46,8 +45,8 @@ public class AdminDaoImpl implements AdminDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Admin admin = new Admin();
-                admin.setId(rs.getInt("id"));
-                admin.setPerson(new PersonalInfoDaoImpl().get(rs.getInt("person_id")));//get personal info too
+                admin.setId(rs.getLong("id"));
+                admin.setPersonId(rs.getLong("person_id"));
                 list.add(admin);
             }
             ps.close();
@@ -62,9 +61,8 @@ public class AdminDaoImpl implements AdminDAO {
         try(Connection con = getConnection()) {
             String sql = "INSERT INTO admin (id, person_id) VALUES(?, ?);";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, admin.getId());
-            ps.setInt(2, admin.getPerson().getId());
-            new PersonalInfoDaoImpl().insert(admin.getPerson());//insert new personal info in db
+            ps.setLong(1, admin.getId());
+            ps.setLong(2, admin.getPersonId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -77,9 +75,8 @@ public class AdminDaoImpl implements AdminDAO {
         try(Connection con = getConnection()) {
             String sql = "UPDATE admin SET person_id = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, admin.getPerson().getId());
-            ps.setInt(2, admin.getId());
-            new PersonalInfoDaoImpl().update(admin.getPerson());//update personal info in db too
+            ps.setLong(1, admin.getId());
+            ps.setLong(2, admin.getPersonId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -92,9 +89,8 @@ public class AdminDaoImpl implements AdminDAO {
         try(Connection con = getConnection()) {
             String sql = "DELETE FROM admin WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, admin.getId());
+            ps.setLong(1, admin.getId());
             ps.executeUpdate();
-            new PersonalInfoDaoImpl().delete(admin.getPerson());//delete personal info too
             ps.close();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);

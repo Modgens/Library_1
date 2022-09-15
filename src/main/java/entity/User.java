@@ -1,24 +1,24 @@
 package entity;
 
 public class User {
-    private int id;
-    private PersonalInfo personalInfo;
+    private long id;
+    private long personalInfoId;
     private String email;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public PersonalInfo getPerson() {
-        return personalInfo;
+    public long getPersonId() {
+        return personalInfoId;
     }
 
-    public void setPerson(PersonalInfo personalInfo) {
-        this.personalInfo = personalInfo;
+    public void setPersonId(long personalInfo) {
+        this.personalInfoId = personalInfo;
     }
 
     public String getEmail() {
@@ -33,7 +33,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", person=" + personalInfo.getLogin() +
+                ", person=" + personalInfoId +
                 ", email='" + email + '\'' +
                 '}';
     }

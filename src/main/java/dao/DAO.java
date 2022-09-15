@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface DAO<T> {
-    T get(int id);
+    T get(long id);
     List<T> getAll();
     void insert(T t);
     void update(T t);
