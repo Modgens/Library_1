@@ -3,86 +3,61 @@
 <%@ page import="entity.Book" %>
 <%@ page import="dao.implementation.AuthorDaoImpl" %>
 <%@ page import="dao.implementation.GenreDaoImpl" %>
+<%@ page import="entity.Genre" %>
+<%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"
+         language="java"%>
 <%
+
   BookDaoImpl bookDaoImpl = new BookDaoImpl();
   AuthorDaoImpl authorDao = new AuthorDaoImpl();
   GenreDaoImpl genreDao = new GenreDaoImpl();
-  List<Book> list = bookDaoImpl.getAll();
-  System.out.println(list);
+  List<Book> list = (List<Book>) request.getAttribute("list");
+  if(list == null)
+          list = bookDaoImpl.getAll();
 %>
 
 <!doctype html>
 <html lang="en">
+
 
 <head>
   <%@include file="includes/header.jsp"%>
   <title>Library</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a href="#" class="navbar-brand mb-0 h1">
-      <img src="images/freehand-book.svg" width="30px" alt="">
-      Library
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarScroll">
-      <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="index.jsp">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="catalog.jsp">Catalog</a>
-        </li>
-        <li class="nav-item dropdown d-flex">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Language
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#"><img src="images/the-ukraine-flag.jpg" width="17px" alt="" style="margin-right: 5px;">Ukraine</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><img src="images/usuk-flag.jpg" width="18px" alt="" style="margin-right: 5px;">English</a></li>
-          </ul>
-        </li>
-      </ul>
-      <li class="nav-item dropdown d-flex">
-      <a class="nav-link dropdown-toggle" style="color: white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="images/person-icon.png" width="30px" style="border-radius: 50%;" alt="">
-        Name
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Personal Account</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Sign Out</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
 
+<nav:Navbar message="catalog" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>'/>
 
 <div class="collapse" id="navbarToggleExternalContent">
   <div class="bg-light p-4">
-    <form class="d-flex">
-      <div class="d-grid gap-2 col-3 mx-3">
-        <select class="form-select" aria-label="Default select example">
+    <form method="post" action="sort" class="d-flex">
+      <div class="d-grid gap-2 col-2 mx-3">
+        <select name="genre" class="form-select" aria-label="Default select example">
           <option selected>Genre</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <%
+            for (Genre genre : genreDao.getAll()) {
+          %>
+          <option value="<%=genre.getGenreName()%>"><%=genre.getGenreName()%></option>
+            <%
+              }
+            %>
         </select>
       </div>
-      <div class="d-grid gap-2 col-3 mx-2">
-        <select class="form-select" aria-label="Default select example">
+      <div class="d-grid gap-2 col-2 mx-2">
+        <select name="sort" class="form-select" aria-label="Default select example">
           <option selected>Sorted by</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <option value="name">Name</option>
+          <option value="author">Author</option>
+          <option value="publisher">Publisher</option>
+          <option value="date">Date of publication</option>
         </select>
       </div>
       <div class="d-grid gap-2 col-3 mx-2">
-        <input type="text" class="form-control" id="" aria-describedby="emailHelp" placeholder="Name">
+        <input name="book" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Book name">
+      </div>
+      <div class="d-grid gap-2 col-3 mx-2">
+        <input name="author" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Author name">
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
         <button type="submit" class="btn btn-primary my-auto">Find</button>
@@ -111,11 +86,11 @@
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h4 class="card-title"><%=book.getName()%></h4>
+          <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=book.getId()%>" ><%=book.getName()%></a></h4>
           <h6 class="author">Author: <%=authorDao.get(book.getAuthorId()).getAuthorName()%></h6>
           <h6 class="author">Genre: <%=genreDao.get(book.getGenreId()).getGenreName()%></h6>
           <h6 class="publication">Publication: <%=book.getPublication()%></h6>
-          <h6 class="publication-date">Date Of Publication: <%=book.getDateOfPublication()%></h6>
+          <h6 class="publication-date">Date Of Publication: <%=book.getDateOfPublication()%> year</h6>
           <p class="card-text"><%=book.getDescription()%></p>
           <a href="#" class="btn btn-outline-success ">Order</a>
         </div>

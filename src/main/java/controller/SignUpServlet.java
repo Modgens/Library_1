@@ -1,10 +1,6 @@
 package controller;
 
 
-import dao.implementation.PersonalInfoDaoImpl;
-import dao.implementation.UserDaoImpl;
-import entity.PersonalInfo;
-import entity.User;
 import service.RegisterService;
 
 import javax.servlet.*;
@@ -22,7 +18,7 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         dispatcher = request.getRequestDispatcher("signUp.jsp");
-        new RegisterService().signUp(request);
+        RegisterService.signUp(request);
         dispatcher.forward(request,response);
     }
 }

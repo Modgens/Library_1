@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class RegisterService {
-    public void signUp(HttpServletRequest request) {
+    public static void signUp(HttpServletRequest request) {
         PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
         String login = request.getParameter("login");
 
@@ -36,19 +36,5 @@ public class RegisterService {
             userDao.insert(user);//insert new user
             request.setAttribute("status", "success");
         }
-    }
-    public void loginService(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        RequestDispatcher dispatcher = null;
-        PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
-        PersonalInfo personalInfo = personalInfoDao.findByLoginAndPassword(login, password);
-        if(personalInfo.getId()!=0){//if id==0   =>   there is empty entity
-            dispatcher = request.getRequestDispatcher("index.jsp");
-        }else{
-            request.setAttribute("status", "failed");
-            dispatcher = request.getRequestDispatcher("login.jsp");
-        }
-        dispatcher.forward(request,response);
     }
 }

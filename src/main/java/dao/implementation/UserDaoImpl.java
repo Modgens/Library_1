@@ -13,6 +13,24 @@ import static util.Connector.getConnection;
 public class UserDaoImpl implements UserDAO {
 
     @Override
+    public boolean hasInfoId(long id) {
+        try(Connection con = getConnection()) {
+            String sql = "SELECT * FROM user WHERE person_id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    @Override
     public User get(long id) {
         User user = new User();
         try (Connection con = getConnection()) {

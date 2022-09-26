@@ -36,6 +36,7 @@ BookDaoImpl implements BookDAO {
 
     @Override
     public List<Book> getAll(){
+
         List<Book> list = new ArrayList<>();
         String sql = "select * from book";
         PreparedStatement ps;

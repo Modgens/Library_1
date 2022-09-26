@@ -96,4 +96,22 @@ public class AdminDaoImpl implements AdminDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public boolean hasInfoId(long id) {
+        try(Connection con = getConnection()) {
+            String sql = "SELECT * FROM admin WHERE person_id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }

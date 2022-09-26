@@ -6,6 +6,15 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <servlet-name>LoginServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -14,6 +23,22 @@
         <servlet-name>SignUpServlet</servlet-name>
         <servlet-class>controller.SignUpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SortingServlet</servlet-name>
+        <servlet-class>controller.SortingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookPageServlet</servlet-name>
+        <servlet-class>controller.BookPageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BookPageServlet</servlet-name>
+        <url-pattern>/book_page</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SortingServlet</servlet-name>
+        <url-pattern>/sort</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signUpServlet</url-pattern>

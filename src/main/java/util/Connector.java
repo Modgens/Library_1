@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connector {
-    private static final String dbUrl = "jdbc:mysql://localhost:3306/dbLibrary?useSSL=false";
+    private static final String dbUrl = "jdbc:mysql://localhost:3306/dbLibrary?useSSL=false&useUnicode=true&amp&characterEncoding=Cp1251";
     private static final String dbName = "root";
     private static final String dbPassword = "32422";
     private static final String dbDriver = "com.mysql.cj.jdbc.Driver";
