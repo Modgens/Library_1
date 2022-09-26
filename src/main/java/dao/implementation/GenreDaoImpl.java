@@ -14,6 +14,25 @@ import java.util.List;
 import static util.Connector.getConnection;
 
 public class GenreDaoImpl implements GenreDAO {
+
+    public long idFromName(String name) {
+        long id=0L;
+        try(Connection con = getConnection()) {
+            String sql = "SELECT * FROM genre WHERE  genre_name = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                id = rs.getInt("id");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
     @Override
     public Genre get(long id) {
         Genre genre = new Genre();

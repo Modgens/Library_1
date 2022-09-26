@@ -14,6 +14,7 @@ import java.util.List;
 import static util.Connector.getConnection;
 
 public class LibrarianDaoImpl implements LibrarianDAO {
+
     @Override
     public boolean hasInfoId(long id) {
         try(Connection con = getConnection()) {

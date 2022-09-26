@@ -30,7 +30,7 @@
             <br>
             <div class=""></div>
             <h4>Дата видання: <%=book.getDateOfPublication()%> year</h4>
-            <h4>Публікатор: <%=book.getPublication()%></h4>
+            <h4>Публікатор: <%=book.getPublicationId()%></h4>
             <h4>Автор: <%=authorDao.get(book.getAuthorId()).getAuthorName()%>></h4>
             <h4>Жанр: <%=genreDao.get(book.getGenreId()).getGenreName()%></h4>
                         <br><br><br><br><br><br><br><br>

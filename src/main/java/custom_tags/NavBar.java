@@ -51,8 +51,8 @@ public class NavBar extends SimpleTagSupport {
                     line3=newLink("", "Order Book", "bookOrder.jsp");
                     break;
                 case "admin":
-                    line1=newLink("", "Book Editor", "bookEditor.jsp");
-                    line2=newLink("", "Librarian","librarian.jsp");
+                    line1=newLink("", "Books", "new_book.jsp");
+                    line2=newLink("", "Librarians","librarian.jsp");
                     line3=newLink("","Users", "users.jsp");
                     break;
             }

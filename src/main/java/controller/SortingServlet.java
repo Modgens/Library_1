@@ -3,8 +3,8 @@ package controller;
 import dao.implementation.AuthorDaoImpl;
 import dao.implementation.BookDaoImpl;
 import dao.implementation.GenreDaoImpl;
+import dao.implementation.PublisherDaoImpl;
 import entity.Book;
-import entity.Genre;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -30,6 +30,7 @@ public class SortingServlet extends HttpServlet {
         BookDaoImpl bookDao = new BookDaoImpl();
         GenreDaoImpl genreDao = new GenreDaoImpl();
         AuthorDaoImpl authorDao = new AuthorDaoImpl();
+        PublisherDaoImpl publisherDao = new PublisherDaoImpl();
 
         List<Book> list = new ArrayList<>(bookDao.getAll());
         Iterator<Book> iterator = list.iterator();
@@ -60,7 +61,7 @@ public class SortingServlet extends HttpServlet {
                 list.sort(Comparator.comparing(a -> authorDao.get(a.getAuthorId()).getAuthorName()));
                 break;
             case "publisher":
-                list.sort(Comparator.comparing(Book::getPublication));
+                list.sort(Comparator.comparing(p -> publisherDao.get(p.getPublicationId()).getPublisherName()));
                 break;
             case "date":
                 list.sort(Comparator.comparing(Book::getDateOfPublication));

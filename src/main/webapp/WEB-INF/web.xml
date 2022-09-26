@@ -15,6 +15,15 @@
         <servlet-name>LoginServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+    <filter>
+        <filter-name>NewBookFilter</filter-name>
+        <filter-class>filters.NewBookFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NewBookFilter</filter-name>
+        <servlet-name>CreateBookServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -31,6 +40,14 @@
         <servlet-name>BookPageServlet</servlet-name>
         <servlet-class>controller.BookPageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateBookServlet</servlet-name>
+        <servlet-class>controller.CreateBookServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateBookServlet</servlet-name>
+        <url-pattern>/create_book</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookPageServlet</servlet-name>
         <url-pattern>/book_page</url-pattern>

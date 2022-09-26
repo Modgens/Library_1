@@ -12,14 +12,15 @@ import static util.Connector.getConnection;
 public class
 BookDaoImpl implements BookDAO {
 
+
     private void setAllInEntity(Book book, ResultSet rs) throws SQLException {
         book.setId(rs.getLong("id"));
         book.setCount(rs.getInt("count"));
         book.setName(rs.getString("title"));
         book.setImgName(rs.getString("img_name"));
         book.setDescription(rs.getString("description"));
-        book.setPublication(rs.getString("publication"));
-        book.setDateOfPublication(rs.getString("year_of_publication"));
+        book.setPublicationId(rs.getLong("publication_id"));
+        book.setDateOfPublication(rs.getInt("year_of_publication"));
         book.setAuthorId(rs.getLong("author_id"));
         book.setGenreId(rs.getLong("genre_id"));
     }
@@ -27,9 +28,9 @@ BookDaoImpl implements BookDAO {
         ps.setString(1, book.getName());
         ps.setLong(2, book.getAuthorId());
         ps.setString(3, book.getDescription());
-        ps.setString(4, book.getDateOfPublication());
+        ps.setInt(4, book.getDateOfPublication());
         ps.setLong(5, book.getCount());
-        ps.setString(6, book.getPublication());
+        ps.setLong(6, book.getPublicationId());
         ps.setString(7, book.getImgName());
         ps.setLong(8, book.getGenreId());
     }
@@ -98,7 +99,7 @@ BookDaoImpl implements BookDAO {
     @Override
     public void insert(Book book) {
         try(Connection con = getConnection()) {
-            String sql = "INSERT INTO book (title, author_id, description, year_of_publication, count, publication, img_name, genre_id) VALUES(?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO book (title, author_id, description, year_of_publication, count, publication_id, img_name, genre_id) VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
             ps.executeUpdate();
@@ -110,7 +111,7 @@ BookDaoImpl implements BookDAO {
     @Override
     public void update(Book book) {
         try(Connection con = getConnection()) {
-            String sql = "UPDATE book SET title=?, author_id=?, description=?, year_of_publication=?, count=?, publication=?, img_name=?, genre_id=? WHERE id=?";
+            String sql = "UPDATE book SET title=?, author_id=?, description=?, year_of_publication=?, count=?, publication_id=?, img_name=?, genre_id=? WHERE id=?";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
             ps.setLong(9, book.getId());

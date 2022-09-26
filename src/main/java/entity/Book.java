@@ -3,8 +3,8 @@ package entity;
 public class Book {
     private long id;
     private String name;
-    private String publication;
-    private String dateOfPublication;
+    private long publicationId;
+    private int dateOfPublication;
     private int count;
     private String description;
     private String imgName;
@@ -67,28 +67,29 @@ public class Book {
         this.name = name;
     }
 
-    public String getPublication() {
-        return publication;
+    public long getPublicationId() {
+        return publicationId;
     }
 
-    public void setPublication(String publication) {
-        this.publication = publication;
+    public void setPublicationId(long publicationId) {
+        this.publicationId = publicationId;
     }
 
-    public String getDateOfPublication() {
+    public int getDateOfPublication() {
         return dateOfPublication;
     }
 
-    public void setDateOfPublication(String dateOfPublication) {
+    public void setDateOfPublication(int dateOfPublication) {
         this.dateOfPublication = dateOfPublication;
     }
 
     @Override
     public String toString() {
+
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", publication='" + publication + '\'' +
+                ", publication='" + publicationId + '\'' +
                 ", dateOfPublication='" + dateOfPublication + '\'' +
                 ", count=" + count +
                 ", description='" + description + '\'' +

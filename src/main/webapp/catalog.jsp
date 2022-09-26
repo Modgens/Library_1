@@ -4,6 +4,7 @@
 <%@ page import="dao.implementation.AuthorDaoImpl" %>
 <%@ page import="dao.implementation.GenreDaoImpl" %>
 <%@ page import="entity.Genre" %>
+<%@ page import="dao.implementation.PublisherDaoImpl" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"
          language="java"%>
@@ -12,6 +13,7 @@
   BookDaoImpl bookDaoImpl = new BookDaoImpl();
   AuthorDaoImpl authorDao = new AuthorDaoImpl();
   GenreDaoImpl genreDao = new GenreDaoImpl();
+  PublisherDaoImpl publisherDao = new PublisherDaoImpl();
   List<Book> list = (List<Book>) request.getAttribute("list");
   if(list == null)
           list = bookDaoImpl.getAll();
@@ -89,7 +91,7 @@
           <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=book.getId()%>" ><%=book.getName()%></a></h4>
           <h6 class="author">Author: <%=authorDao.get(book.getAuthorId()).getAuthorName()%></h6>
           <h6 class="author">Genre: <%=genreDao.get(book.getGenreId()).getGenreName()%></h6>
-          <h6 class="publication">Publication: <%=book.getPublication()%></h6>
+          <h6 class="publication">Publication: <%=publisherDao.get(book.getPublicationId()).getPublisherName()%></h6>
           <h6 class="publication-date">Date Of Publication: <%=book.getDateOfPublication()%> year</h6>
           <p class="card-text"><%=book.getDescription()%></p>
           <a href="#" class="btn btn-outline-success ">Order</a>

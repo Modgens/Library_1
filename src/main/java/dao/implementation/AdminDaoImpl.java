@@ -14,6 +14,7 @@ import java.util.List;
 import static util.Connector.getConnection;
 
 public class AdminDaoImpl implements AdminDAO {
+
     @Override
     public Admin get(long id) {
         Admin admin = new Admin();
