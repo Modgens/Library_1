@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,11 +120,10 @@ public class NewBookFilter implements Filter {
                 request.setAttribute("error", "Incorrect image type!");
             }
             InputStream fileContent = filePart.getInputStream();
-            Image image = ImageIO.read(fileContent);
             File file = new File("C:/Users/Modgen/IdeaProjects/Library_1/src/main/webapp/book_images/"+fileName);
-            if(!file.createNewFile()){
-                request.setAttribute("error", "The named file already exists");
-            }
+            BufferedImage imBuff = ImageIO.read(fileContent);
+            System.out.println(imBuff);
+            ImageIO.write(imBuff, "png", file);
         }
         bookEntity.setImgName(fileName);
 
