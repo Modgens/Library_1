@@ -8,37 +8,24 @@ import entity.Author;
 import entity.Book;
 import entity.Genre;
 import entity.Publisher;
-
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.*;
 import java.io.IOException;
 
 @MultipartConfig
-public class CreateBookServlet extends HttpServlet {
+public class ChangeBookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("new_book.jsp");
-        System.out.println(request.getParameter("page"));
+        RequestDispatcher dispatcher = request.getRequestDispatcher("change_book.jsp");
         if(request.getAttribute("error").equals("")){
             request.setAttribute("status", "success");
 
             Book book = (Book)request.getAttribute("book");
-            Genre genre = (Genre)request.getAttribute("genre");
-            Author author = (Author) request.getAttribute("author");
-            Publisher publisher = (Publisher) request.getAttribute("publisher");
 
             BookDaoImpl bookDao = new BookDaoImpl();
-            AuthorDaoImpl authorDao = new AuthorDaoImpl();
-            GenreDaoImpl genreDao = new GenreDaoImpl();
-            PublisherDaoImpl publisherDao = new PublisherDaoImpl();
-
-            book.setGenreId(genreDao.idFromName(genre.getGenreName()));
-            book.setAuthorId(authorDao.idFromName(author.getAuthorName()));
-            book.setPublicationId(publisherDao.idFromName(publisher.getPublisherName()));
-
-            bookDao.insert(book);
+            bookDao.update(book);
 
         }else {
             request.setAttribute("status", "failed");

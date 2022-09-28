@@ -16,7 +16,7 @@ public class LoginFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
-        System.out.println("filter");
+        System.out.println("login-filter");
     }
 
     public void destroy() {
