@@ -14,6 +14,7 @@
   AuthorDaoImpl authorDao = new AuthorDaoImpl();
   GenreDaoImpl genreDao = new GenreDaoImpl();
   PublisherDaoImpl publisherDao = new PublisherDaoImpl();
+  Book book = new BookDaoImpl().get(Long.parseLong(request.getParameter("book_id")));
 %>
 
 <!doctype html>
@@ -37,28 +38,27 @@
   <form action="change_book" method="post" enctype="multipart/form-data">
     <div class="mb-3">
       <label for="titleInput" class="form-label">Enter book title</label>
-      <input name="title" type="text" class="form-control" id="titleInput" placeholder="Kobzar">
-      <div class="valid-feedback">
-        Looks good!
-      </div>
+      <input name="title" type="text" class="form-control" id="titleInput" placeholder="Kobzar" value="<%=book.getName()%>">
     </div>
     <label for="SelectGenre" class="form-label">Select genre</label>
     <select name="genre" id="SelectGenre" class="form-select  mb-3" aria-label="Default select example">
       <%
         for (Genre genre : genreDao.getAll()) {
-      %>
-      <option value="<%=genre.getGenreName()%>"><%=genre.getGenreName()%></option>
-      <%
+          if(book.getGenreId()==genreDao.idFromName(genre.getGenreName())){
+            %><option selected value="<%=genre.getGenreName()%>"><%=genre.getGenreName()%></option><%
+          } else {
+            %><option value="<%=genre.getGenreName()%>"><%=genre.getGenreName()%></option><%
+          }
         }
       %>
     </select>
     <div class="mb-3">
       <label for="ControlInput" class="form-label">Enter year of publication</label>
-      <input name="year" type="text" class="form-control" id="ControlInput" placeholder="1956">
+      <input name="year" type="text" class="form-control" id="ControlInput" placeholder="1956" value="<%=book.getDateOfPublication()%>">
     </div>
 
     <label for="AuthorDataList" class="form-label">Find author: </label>
-    <input name="author" class="form-control mb-3" list="datalistAuthor" id="AuthorDataList" placeholder="Type to search...">
+    <input name="author" class="form-control mb-3" list="datalistAuthor" id="AuthorDataList" placeholder="Type to search..." value="<%=authorDao.get(book.getAuthorId()).getAuthorName()%>">
     <datalist id="datalistAuthor">
       <%
         for (Author author : authorDao.getAll()) {
@@ -69,7 +69,7 @@
       %>
     </datalist>
     <label for="PublicationDataList" class="form-label">Find publication: </label>
-    <input name="publisher" class="form-control mb-3" list="datalistPublication" id="PublicationDataList" placeholder="Type to search...">
+    <input name="publisher" class="form-control mb-3" list="datalistPublication" id="PublicationDataList" placeholder="Type to search..." value="<%=publisherDao.get(book.getPublicationId()).getPublisherName()%>">
     <datalist  id="datalistPublication" >
       <%
         for (Publisher publisher : publisherDao.getAll()) {
@@ -81,11 +81,11 @@
     </datalist>
     <div class="mb-3">
       <label for="CountInput" class="form-label">Enter count of book</label>
-      <input name="count" type="text" class="form-control" id="CountInput" placeholder="123">
+      <input name="count" type="text" class="form-control" id="CountInput" placeholder="123" value="<%=book.getCount()%>">
     </div>
     <div class="mb-3">
       <label for="FormControlTextarea" class="form-label">Enter description</label>
-      <textarea name="description" class="form-control" id="FormControlTextarea" rows="3"></textarea>
+      <textarea name="description" class="form-control" id="FormControlTextarea" rows="3"><%=book.getDescription()%></textarea>
     </div>
     <div class="mb-3">
       <label for="formFile" class="form-label">Upload img</label>
