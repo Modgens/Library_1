@@ -71,6 +71,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             ps.setString(3, personalInfo.getLogin());
             ps.setString(4, personalInfo.getPassword());
             ps.executeUpdate();
+            ps.close();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

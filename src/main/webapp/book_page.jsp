@@ -19,7 +19,7 @@
     <%@include file="includes/header.jsp"%>
 </head>
 <body>
-<nav:Navbar message="" role='<%=(String) session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>'/>
+<nav:Navbar message="" role='<%=(String) session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>' lang="eng"/>
 <div class="container my-5">
     <div class="d-flex">
         <div class="col-5 card">

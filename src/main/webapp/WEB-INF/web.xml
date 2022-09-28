@@ -6,6 +6,17 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+
+    <filter>
+        <filter-name>ChangeBookFilter</filter-name>
+        <filter-class>filters.ChangeBookFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ChangeBookFilter</filter-name>
+        <servlet-name>ChangeBookServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>filters.LoginFilter</filter-class>
@@ -15,6 +26,7 @@
         <servlet-name>LoginServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+
     <filter>
         <filter-name>NewBookFilter</filter-name>
         <filter-class>filters.NewBookFilter</filter-class>
@@ -24,6 +36,17 @@
         <servlet-name>CreateBookServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+
+    <filter>
+        <filter-name>NewLibrarianFilter</filter-name>
+        <filter-class>filters.NewLibrarianFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NewLibrarianFilter</filter-name>
+        <servlet-name>CreateLibrarianServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -44,6 +67,46 @@
         <servlet-name>CreateBookServlet</servlet-name>
         <servlet-class>controller.CreateBookServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <servlet-class>controller.DeleteBookServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeBookServlet</servlet-name>
+        <servlet-class>controller.ChangeBookServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteLibrarianServlet</servlet-name>
+        <servlet-class>controller.DeleteLibrarianServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateLibrarianServlet</servlet-name>
+        <servlet-class>controller.CreateLibrarianServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserBanServlet</servlet-name>
+        <servlet-class>controller.UserBanServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserBanServlet</servlet-name>
+        <url-pattern>/user_ban</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateLibrarianServlet</servlet-name>
+        <url-pattern>/create_librarian</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteLibrarianServlet</servlet-name>
+        <url-pattern>/delete_librarian</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeBookServlet</servlet-name>
+        <url-pattern>/change_book</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <url-pattern>/delete_book</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateBookServlet</servlet-name>
         <url-pattern>/create_book</url-pattern>

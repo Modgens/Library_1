@@ -8,9 +8,14 @@ public class NavBar extends SimpleTagSupport {
     private String message;
     private String role;
     private String name;
+    private String lang;
 
     public String newLink(String isActive, String name, String jspName){
         return "<li class=\"nav-item\"> <a class=\"nav-link "+isActive+"\" href=\""+jspName+"\">"+name+"</a></li>";
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public void setName(String name) {
@@ -27,37 +32,50 @@ public class NavBar extends SimpleTagSupport {
 
     StringWriter sw = new StringWriter();
     public void doTag() throws JspException, IOException {
-        if (message != null && role!=null) {
+        if (message != null && role!=null && lang!=null) {
             String catalogIsActive="";
-            String homeIsActive="";
+            String booksIsActive="";
+            String librarianIsActive="";
+            String userIsActive="";
 
             String line1="";
             String line2="";
             String line3="";
 
-            if(message.equals("catalog")){
-                catalogIsActive="active";
+            switch (message){
+                case "catalog":
+                    catalogIsActive="active";
+                    break;
+                case "books":
+                    booksIsActive="active";
+                    break;
+                case "librarians":
+                    librarianIsActive="active";
+                    break;
+                case "users":
+                    userIsActive="active";
+                    break;
             }
-            if(message.equals("home")){
-                homeIsActive="active";
-            }
+
             switch (role){
                 case "user":
                     break;
                 case "librarian":
-
                     line1=newLink("","Reading Room", "readingRoom.jsp");
                     line2=newLink("", "Orders","orders.jsp");
                     line3=newLink("", "Order Book", "bookOrder.jsp");
                     break;
                 case "admin":
-                    line1=newLink("", "Books", "new_book.jsp");
-                    line2=newLink("", "Librarians","librarian.jsp");
-                    line3=newLink("","Users", "users.jsp");
+                    line1=newLink(booksIsActive, "Books", "books.jsp");
+                    line2=newLink(librarianIsActive, "Librarians","librarians.jsp");
+                    line3=newLink(userIsActive,"Users", "users.jsp");
                     break;
             }
 
             JspWriter out = getJspContext().getOut();
+            if (lang.equals("eng")){
+
+            }
             out.println("<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">\n" +
                     "  <div class=\"container\">\n" +
                     "    <a href=\"#\" class=\"navbar-brand mb-0 h1\">\n" +
@@ -70,7 +88,7 @@ public class NavBar extends SimpleTagSupport {
                     "    <div class=\"collapse navbar-collapse\" id=\"navbarScroll\">\n" +
                     "      <ul class=\"navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll\" style=\"--bs-scroll-height: 100px;\">\n" +
                     "        <li class=\"nav-item\">\n" +
-                    "          <a class=\"nav-link "+homeIsActive+"\" aria-current=\"page\" href=\"index.jsp\">Home</a>\n" +
+                    "          <a class=\"nav-link "+"\" aria-current=\"page\" href=\"index.jsp\">Home</a>\n" +
                     "        </li>\n" +
                     "        <li class=\"nav-item\">\n" +
                     "          <a class=\"nav-link "+catalogIsActive+"\" href=\"catalog.jsp\">Catalog</a>\n" +

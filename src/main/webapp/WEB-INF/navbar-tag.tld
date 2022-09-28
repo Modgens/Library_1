@@ -19,6 +19,9 @@
             <name>name</name>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>lang</name>
+        </attribute>
 
     </tag>
 </taglib>

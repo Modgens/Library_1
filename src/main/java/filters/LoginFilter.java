@@ -16,7 +16,7 @@ public class LoginFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
-        System.out.println("filter");
+        System.out.println("login-filter");
     }
 
     public void destroy() {
@@ -38,6 +38,12 @@ public class LoginFilter implements Filter {
         long infoId = personalInfo.getId();
         if(infoId!=0){//if id==0   =>   there is empty entity
             if(userDao.hasInfoId(infoId)){
+                if(userDao.getStatusFromPersonInfoID(infoId).equals("baned")){
+                    request.setAttribute("error", "You are baned!");
+                    request.setAttribute("status", "failed");
+                    chain.doFilter(request, response);
+                    return;
+                }
                 request.setAttribute("role", "admin");
             }
             if(librarianDao.hasInfoId(infoId)){
@@ -49,7 +55,9 @@ public class LoginFilter implements Filter {
             request.setAttribute("status", "success");
             request.setAttribute("name", personalInfo.getFirstName()+" "+personalInfo.getLastName());
         }else{
+            System.out.println("error");
             request.setAttribute("status", "failed");
+            request.setAttribute("error", "Wrong Username or Password");
         }
         chain.doFilter(request, response);
     }

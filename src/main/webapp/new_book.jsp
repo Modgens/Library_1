@@ -27,7 +27,7 @@
 <body>
 <input type="hidden" id="status" value="<%= request.getAttribute("status")%>">
 
-<nav:Navbar message="catalog" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>'/>
+<nav:Navbar message="" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>' lang="eng"/>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <div class="container my-5" style="max-width: 30rem;">
@@ -43,6 +43,7 @@
       Looks good!
     </div>
   </div>
+
   <label for="SelectGenre" class="form-label">Select genre</label>
   <select name="genre" id="SelectGenre" class="form-select  mb-3" aria-label="Default select example" required>
     <%
@@ -53,14 +54,15 @@
       }
     %>
   </select>
+
   <div class="mb-3">
     <label for="ControlInput" class="form-label">Enter year of publication</label>
     <input name="year" type="text" class="form-control" id="ControlInput" placeholder="1956" required>
   </div>
 
-  <label for="AuthorDataList" class="form-label">Find author: </label>
-  <input name="author" class="form-control mb-3" list="datalistAuthor" id="AuthorDataList" placeholder="Type to search...">
-  <datalist id="datalistAuthor" >
+  <label for="AuthorDataList" class="form-label">Select author or Enter new: </label>
+  <input name="author" class="form-control mb-3" list="datalistAuthor" id="AuthorDataList" placeholder="Type to search..." required>
+  <datalist id="datalistAuthor">
     <%
       for (Author author : authorDao.getAll()) {
     %>
@@ -69,8 +71,8 @@
       }
     %>
   </datalist>
-  <label for="PublicationDataList" class="form-label">Find publication: </label>
-  <input name="publisher" class="form-control mb-3" list="datalistPublication" id="PublicationDataList" placeholder="Type to search...">
+  <label for="PublicationDataList" class="form-label">Select publication or Enter new: </label>
+  <input name="publisher" class="form-control mb-3" list="datalistPublication" id="PublicationDataList" placeholder="Type to search..." required>
   <datalist  id="datalistPublication" >
     <%
       for (Publisher publisher : publisherDao.getAll()) {
@@ -80,9 +82,6 @@
       }
     %>
   </datalist>
-  <div class="alert alert-info" role="alert">
-    If you can't find an author or publisher, you can create one below
-  </div>
   <div class="mb-3">
     <label for="CountInput" class="form-label">Enter count of book</label>
     <input name="count" type="text" class="form-control" id="CountInput" placeholder="123" required>
@@ -94,20 +93,9 @@
   <div class="mb-3">
     <label for="formFile" class="form-label">Upload img</label>
     <input name="img" class="form-control" type="file" id="formFile">
-    <div class="invalid-feedback">
-      Please provide a valid zip.
-    </div>
   </div>
   <div class="alert alert-info" role="alert">
     If you don't have an image, the book will have an embedded image
-  </div>
-  <h5>You also can create new author and publisher: </h5>
-  <div class="mb-3">
-    <label for="newAuthor" class="form-label">Enter author name</label>
-    <input name="newAuthor" type="text" class="form-control" id="newAuthor" placeholder="Taras Shevchenko">
-    <br>
-    <label for="newPublisher" class="form-label">Enter publication name</label>
-    <input name="newPublisher" type="text" class="form-control" id="newPublisher" placeholder="BlaBlaBla Studio">
   </div>
   <div class="col-12">
     <button class="btn btn-primary" type="submit">Submit form</button>

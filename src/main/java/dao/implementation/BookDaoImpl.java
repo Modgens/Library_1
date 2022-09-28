@@ -124,7 +124,7 @@ BookDaoImpl implements BookDAO {
     @Override
     public void delete(Book book) {
         try(Connection con = getConnection()) {
-            String sql = "DELETE FROM user WHERE id = ?";
+            String sql = "DELETE FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, book.getId());
             ps.executeUpdate();
@@ -133,4 +133,16 @@ BookDaoImpl implements BookDAO {
             throw new RuntimeException(e);
         }
     }
+    public void deleteById(Long id) {
+        try(Connection con = getConnection()) {
+            String sql = "DELETE FROM book WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

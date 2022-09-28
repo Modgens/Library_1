@@ -1,30 +1,27 @@
 package filters;
 
-import dao.implementation.AdminDaoImpl;
-import dao.implementation.LibrarianDaoImpl;
-import dao.implementation.PersonalInfoDaoImpl;
-import dao.implementation.UserDaoImpl;
+import dao.implementation.*;
 import entity.*;
-
 import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.file.Paths;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import org.apache.commons.io.FilenameUtils;
 
 public class NewBookFilter implements Filter {
     private FilterConfig config;
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
-        System.out.println("filter");
+        System.out.println("filter-new-book");
     }
 
     public void destroy() {
@@ -40,13 +37,17 @@ public class NewBookFilter implements Filter {
         //Entity
         Book bookEntity = new Book();
         Genre genreEntity = new Genre();
-        Author authorEntity = new Author();
-        Publisher publisherEntity = new Publisher();
+        Author authorEntity = null;
+        Publisher publisherEntity = null;
+
+        //dao
+        BookDaoImpl bookDao = new BookDaoImpl();
+        AuthorDaoImpl authorDao = new AuthorDaoImpl();
+        PublisherDaoImpl publisherDao = new PublisherDaoImpl();
+        GenreDaoImpl genreDao = new GenreDaoImpl();
 
         //regex
-        final String BOOK_REGEX = "[а-яА-Яa-zA-Z0-9!?.,\\-—() ]+";
-        final String YEAR_REGEX = "\\d{4}";
-        final String COUNT_REGEX = "\\d+";
+        final String BOOK_REGEX = "[^%{}<>]+";
         final String IMG_REGEX = "([^\\s]+(\\.(?i)(png|jpg|gif|bmp|jpeg|PNG|JPG|GIF|BMP|JPEG)$))";
         final String AUTHOR_REGEX = "[а-яА-Яa-zA-Z]+";
 
@@ -56,8 +57,10 @@ public class NewBookFilter implements Filter {
         String title = request.getParameter("title");
         if(title.matches(BOOK_REGEX)){
             bookEntity.setName(title);
-        }else{
+        } else {
             request.setAttribute("error", "Incorrect book title!");
+            chain.doFilter(request,response);
+            return;
         }
 
         //set genre
@@ -67,31 +70,49 @@ public class NewBookFilter implements Filter {
         int year=0;
         try {
             year = Integer.parseInt(request.getParameter("year"));
-        }catch (Exception e){
+        } catch (Exception e){
             request.setAttribute("error", "Incorrect year input!");
+            chain.doFilter(request,response);
+            return;
         }
-        if((""+year).matches(YEAR_REGEX)){
+        Calendar calendar = new GregorianCalendar();
+        int current_Year=calendar.get(Calendar.YEAR);
+        if(year>=1800&&year<=current_Year){
             bookEntity.setDateOfPublication(year);
-        }else {
-            request.setAttribute("error", "Year must have four number!");
+        } else {
+            request.setAttribute("error", "Year must be between 1800 year - now !");
+            chain.doFilter(request, response);
+            return;
         }
 
         //author validation
-        String author=request.getParameter("newAuthor");
-        if(author.equals("")){
-            author=request.getParameter("author");
-        }else if (!author.matches(AUTHOR_REGEX)){
-            request.setAttribute("error", "Incorrect author name!");
-        }
-        String publisher = request.getParameter("newPublisher");
-        if(publisher.equals("")){
-            publisher=request.getParameter("publisher");
-        }
-        if(publisher.equals("")||author.equals("")){
-            request.setAttribute("error", "You should enter author or publisher!");
-        }else{
-            publisherEntity.setPublisherName(publisher);
+        String author=request.getParameter("author");
+        long authorId = authorDao.idFromName(author);
+        if(authorId!=0){
+            bookEntity.setAuthorId(authorId);
+        } else if(author.matches(AUTHOR_REGEX)){
+            authorEntity = new Author();
             authorEntity.setAuthorName(author);
+        } else {
+            request.setAttribute("error", "Incorrect author name!");
+            chain.doFilter(request, response);
+            return;
+        }
+
+        //public validation
+
+        String publisher = request.getParameter("publisher");
+        long publisherId = publisherDao.idFromName(publisher);
+
+        if(publisherId!=0){
+            bookEntity.setPublicationId(publisherId);
+        } else if(publisher.matches(AUTHOR_REGEX)){
+            publisherEntity = new Publisher();
+            publisherEntity.setPublisherName(publisher);
+        } else {
+            request.setAttribute("error", "Incorrect publisher name!");
+            chain.doFilter(request, response);
+            return;
         }
 
         //count validation
@@ -100,11 +121,15 @@ public class NewBookFilter implements Filter {
             count = Integer.parseInt(request.getParameter("count"));
         }catch (Exception e){
             request.setAttribute("error", "In count should be only numbers!");
+            chain.doFilter(request, response);
+            return;
         }
-        if((""+count).matches(COUNT_REGEX)){
+        if(count<=1000){
             bookEntity.setCount(count);
         }else {
-            request.setAttribute("error", "In count should be only numbers!");
+            request.setAttribute("error", "Count can't be bigger then 1000");
+            chain.doFilter(request, response);
+            return;
         }
 
         //set description
@@ -118,20 +143,27 @@ public class NewBookFilter implements Filter {
                 bookEntity.setImgName(fileName);
             }else{
                 request.setAttribute("error", "Incorrect image type!");
+                chain.doFilter(request, response);
+                return;
             }
             InputStream fileContent = filePart.getInputStream();
             File file = new File("C:/Users/Modgen/IdeaProjects/Library_1/src/main/webapp/book_images/"+fileName);
             BufferedImage imBuff = ImageIO.read(fileContent);
-            System.out.println(imBuff);
-            ImageIO.write(imBuff, "png", file);
+            ImageIO.write(imBuff, FilenameUtils.getExtension(fileName), file);
         }
         bookEntity.setImgName(fileName);
 
         //final set
-        request.setAttribute("book", bookEntity);
-        request.setAttribute("genre", genreEntity);
-        request.setAttribute("author", authorEntity);
-        request.setAttribute("publisher", publisherEntity);
+        if(authorEntity!=null){
+            authorDao.insert(authorEntity);
+            bookEntity.setAuthorId(authorDao.idFromName(authorEntity.getAuthorName()));
+        }
+        if(publisherEntity!=null){
+            publisherDao.insert(publisherEntity);
+            bookEntity.setPublicationId(publisherDao.idFromName(publisherEntity.getPublisherName()));
+        }
+        bookEntity.setGenreId(genreDao.idFromName(genreEntity.getGenreName()));
+        bookDao.insert(bookEntity);
 
         chain.doFilter(request,response);
     }

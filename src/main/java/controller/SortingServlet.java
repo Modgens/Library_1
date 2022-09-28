@@ -68,7 +68,7 @@ public class SortingServlet extends HttpServlet {
                 break;
         }
         request.setAttribute("list", list);
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/catalog.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(request.getParameter("page"));
         dispatcher.forward(request,response);
     }
 }

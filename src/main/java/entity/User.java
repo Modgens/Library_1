@@ -4,6 +4,7 @@ public class User {
     private long id;
     private long personalInfoId;
     private String email;
+    private String status;
 
     public long getId() {
         return id;
@@ -27,6 +28,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
