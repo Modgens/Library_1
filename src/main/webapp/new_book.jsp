@@ -95,7 +95,7 @@
     <input name="img" class="form-control" type="file" id="formFile">
   </div>
   <div class="alert alert-info" role="alert">
-    If you don't have an image, the book will have an embedded image
+    If you don't have an image, the book will have a default image
   </div>
   <div class="col-12">
     <button class="btn btn-primary" type="submit">Submit form</button>

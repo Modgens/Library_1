@@ -109,9 +109,9 @@ public class NavBar extends SimpleTagSupport {
                     "        "+name+"\n" +
                     "      </a>\n" +
                     "      <ul class=\"dropdown-menu\">\n" +
-                    "        <li><a class=\"dropdown-item\" href=\"#\">Personal Account</a></li>\n" +
+                    "        <li><a class=\"dropdown-item\" href=\"personal_account.jsp\">Personal Account</a></li>\n" +
                     "        <li><hr class=\"dropdown-divider\"></li>\n" +
-                    "        <li><a class=\"dropdown-item\" href=\"#\">Sign Out</a></li>\n" +
+                    "        <li><a class=\"dropdown-item\" href=\"login.jsp\">Sign Out</a></li>\n" +
                     "      </ul>\n" +
                     "    </div>\n" +
                     "  </div>\n" +

@@ -139,4 +139,21 @@ public class UserDaoImpl implements UserDAO {
         return status;
     }
 
+    public long getIdFromPersonInfoId(long infoId) {
+        long id = 0L;
+        try(Connection con = getConnection()) {
+            String sql = "SELECT id FROM user WHERE person_id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, infoId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                id = rs.getLong("id");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
 }

@@ -44,7 +44,8 @@ public class LoginFilter implements Filter {
                     chain.doFilter(request, response);
                     return;
                 }
-                request.setAttribute("role", "admin");
+                request.setAttribute("user_id", userDao.getIdFromPersonInfoId(infoId));
+                request.setAttribute("role", "user");
             }
             if(librarianDao.hasInfoId(infoId)){
                 request.setAttribute("role", "librarian");
