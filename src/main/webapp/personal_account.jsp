@@ -1,13 +1,25 @@
 <%@ page import="dao.implementation.*" %>
 <%@ page import="entity.User" %>
 <%@ page import="entity.PersonalInfo" %>
+<%@ page import="entity.Subscriptions" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@ page import="java.util.Locale" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%
+  ResourceBundle rb = null;
+  if(session.getAttribute("rb")==null){
+    rb = ResourceBundle.getBundle("Localization/Bundle", new Locale("en", "US"));
+  } else {
+    rb = (ResourceBundle) session.getAttribute("rb");
+  }
+  String lang = rb.getString("language");
+
   UserDaoImpl userDao = new UserDaoImpl();
   PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
   User user = userDao.get((long)session.getAttribute("user_id"));
   PersonalInfo personalInfo = personalInfoDao.get(user.getPersonId());
+  SubscriptionsDaoImpl subscriptionsDao = new SubscriptionsDaoImpl();
 %>
 
 <!doctype html>
@@ -20,24 +32,43 @@
 </head>
 <body>
 <input type="hidden" id="status" value="<%= request.getAttribute("status")%>">
-
 <nav:Navbar message="" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>' lang="eng"/>
-
 <div class="card w-50 mt-3 mx-auto">
   <div class="card-body">
     <h5 class="card-title"><%=personalInfo.getFirstName()+" "+personalInfo.getLastName()%></h5>
-    <p class="card-text"><%=personalInfo.getLogin()%></p>
-    <p class="card-text"><%=user.getEmail()%></p>
-    <p class="card-text"><%=personalInfo.getPassword()%></p>
-    <a href="${pageContext.request.contextPath}/getSubscription?book_id=<%=user.getId()%>"></a>
+    <p class="card-text"><%=rb.getString("login")%>: <%=personalInfo.getLogin()%></p>
+    <p class="card-text"><%=rb.getString("email")%>: <%=user.getEmail()%></p>
+    <p class="card-text"><%=rb.getString("password")%>: <%=personalInfo.getPassword()%></p>
+
+    <%
+      if(subscriptionsDao.getFromUserDao(user.getId())==null){
+        %>
+    <button type="button" class="btn btn-outline-success">
+      <a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/getSubscription?user_id=<%=user.getId()%>">
+        <%=rb.getString("getSub")%>
+      </a>
+    </button>
+      <%
+      }else{
+        %>
+    <p><%=rb.getString("subEnd")%> <%=subscriptionsDao.getFromUserDao(user.getId()).getEndDate()%></p>
+    <%
+      }
+    %>
+
 
   </div>
 </div>
 
-
-
-
 <%@include file="includes/footer.jsp"%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+<script type="text/javascript">
+  var status = document.getElementById("status").value;
+  if(status=="success") {
+    swal("Congrats", "You Successfully Get Subscription", "success");
+  }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
 <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
 </body>

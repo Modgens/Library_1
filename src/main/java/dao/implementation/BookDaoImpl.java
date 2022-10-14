@@ -3,6 +3,8 @@ package dao.implementation;
 
 import dao.BookDAO;
 import entity.Book;
+import util.ConnectionPool;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +19,10 @@ BookDaoImpl implements BookDAO {
         book.setId(rs.getLong("id"));
         book.setCount(rs.getInt("count"));
         book.setName(rs.getString("title"));
+        book.setNameUa(rs.getString("title_ua"));
         book.setImgName(rs.getString("img_name"));
         book.setDescription(rs.getString("description"));
+        book.setDescriptionUa(rs.getString("description_ua"));
         book.setPublicationId(rs.getLong("publication_id"));
         book.setDateOfPublication(rs.getInt("year_of_publication"));
         book.setAuthorId(rs.getLong("author_id"));
@@ -26,13 +30,15 @@ BookDaoImpl implements BookDAO {
     }
     private void setAllInPS(PreparedStatement ps, Book book) throws SQLException {
         ps.setString(1, book.getName());
-        ps.setLong(2, book.getAuthorId());
-        ps.setString(3, book.getDescription());
-        ps.setInt(4, book.getDateOfPublication());
-        ps.setLong(5, book.getCount());
-        ps.setLong(6, book.getPublicationId());
-        ps.setString(7, book.getImgName());
-        ps.setLong(8, book.getGenreId());
+        ps.setString(2, book.getNameUa());
+        ps.setLong(3, book.getAuthorId());
+        ps.setString(4, book.getDescription());
+        ps.setString(5, book.getDescriptionUa());
+        ps.setInt(6, book.getDateOfPublication());
+        ps.setLong(7, book.getCount());
+        ps.setLong(8, book.getPublicationId());
+        ps.setString(9, book.getImgName());
+        ps.setLong(10, book.getGenreId());
     }
 
     @Override
@@ -41,7 +47,7 @@ BookDaoImpl implements BookDAO {
         List<Book> list = new ArrayList<>();
         String sql = "select * from book";
         PreparedStatement ps;
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
@@ -49,7 +55,7 @@ BookDaoImpl implements BookDAO {
                 setAllInEntity(book, rs);//to escape duplication
                 list.add(book);
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -59,7 +65,7 @@ BookDaoImpl implements BookDAO {
     public List<Book> findByName(String name) {
         List<Book> list = new ArrayList<>();
         Book book = new Book();
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM book WHERE title = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, name);
@@ -70,7 +76,7 @@ BookDaoImpl implements BookDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -79,7 +85,7 @@ BookDaoImpl implements BookDAO {
     @Override
     public Book get(long id) {
         Book book = new Book();
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
@@ -89,7 +95,7 @@ BookDaoImpl implements BookDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return book;
@@ -98,49 +104,49 @@ BookDaoImpl implements BookDAO {
 
     @Override
     public void insert(Book book) {
-        try(Connection con = getConnection()) {
-            String sql = "INSERT INTO book (title, author_id, description, year_of_publication, count, publication_id, img_name, genre_id) VALUES(?,?,?,?,?,?,?,?)";
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+            String sql = "INSERT INTO book (title, title_ua, author_id, description, description_ua, year_of_publication, count, publication_id, img_name, genre_id) VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
             ps.executeUpdate();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Book book) {
-        try(Connection con = getConnection()) {
-            String sql = "UPDATE book SET title=?, author_id=?, description=?, year_of_publication=?, count=?, publication_id=?, img_name=?, genre_id=? WHERE id=?";
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+            String sql = "UPDATE book SET title=?,title_ua=?, author_id=?, description=?, description_ua=?, year_of_publication=?, count=?, publication_id=?, img_name=?, genre_id=? WHERE id=?";
             PreparedStatement ps= con.prepareStatement(sql);
             setAllInPS(ps,book);//to escape duplication
-            ps.setLong(9, book.getId());
+            ps.setLong(11, book.getId());
             ps.executeUpdate();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Book book) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, book.getId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
     public void deleteById(Long id) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

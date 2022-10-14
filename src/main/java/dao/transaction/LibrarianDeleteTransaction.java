@@ -1,5 +1,7 @@
 package dao.transaction;
 
+import util.ConnectionPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +14,7 @@ public class LibrarianDeleteTransaction {
     public void deleteById(long librarian_id) {
         Connection con = null;
         try {
-            con = getConnection();
+            con = ConnectionPool.getInstance().getConnection();
             con.setAutoCommit(false);
 
             long personId=0L;
@@ -37,7 +39,7 @@ public class LibrarianDeleteTransaction {
             ps.close();
 
             con.commit();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.getMessage();
             if (con != null) {
                 try {

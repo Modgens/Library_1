@@ -6,14 +6,22 @@
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errors/500/index.html</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errors/404/index.html</location>
+    </error-page>
 
     <filter>
-        <filter-name>ChangeBookFilter</filter-name>
-        <filter-class>filters.ChangeBookFilter</filter-class>
+        <filter-name>NewOrderFilter</filter-name>
+        <filter-class>filters.NewOrderFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>ChangeBookFilter</filter-name>
-        <servlet-name>ChangeBookServlet</servlet-name>
+        <filter-name>NewOrderFilter</filter-name>
+        <servlet-name>NewOrderServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -28,22 +36,27 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>NewBookFilter</filter-name>
-        <filter-class>filters.NewBookFilter</filter-class>
+        <filter-name>BookFilter</filter-name>
+        <filter-class>filters.BookFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>NewBookFilter</filter-name>
-        <servlet-name>CreateBookServlet</servlet-name>
+        <filter-name>BookFilter</filter-name>
+        <servlet-name>BookServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <filter>
-        <filter-name>NewLibrarianFilter</filter-name>
-        <filter-class>filters.NewLibrarianFilter</filter-class>
+        <filter-name>NewPersonFilter</filter-name>
+        <filter-class>filters.NewPersonFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>NewLibrarianFilter</filter-name>
+        <filter-name>NewPersonFilter</filter-name>
         <servlet-name>CreateLibrarianServlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>NewPersonFilter</filter-name>
+        <servlet-name>SignUpServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -56,24 +69,20 @@
         <servlet-class>controller.SignUpServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SortingServlet</servlet-name>
-        <servlet-class>controller.SortingServlet</servlet-class>
+        <servlet-name>BookSortingServlet</servlet-name>
+        <servlet-class>controller.BookSortingServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BookPageServlet</servlet-name>
         <servlet-class>controller.BookPageServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateBookServlet</servlet-name>
-        <servlet-class>controller.CreateBookServlet</servlet-class>
+        <servlet-name>BookServlet</servlet-name>
+        <servlet-class>controller.BookServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteBookServlet</servlet-name>
         <servlet-class>controller.DeleteBookServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChangeBookServlet</servlet-name>
-        <servlet-class>controller.ChangeBookServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteLibrarianServlet</servlet-name>
@@ -87,6 +96,63 @@
         <servlet-name>UserBanServlet</servlet-name>
         <servlet-class>controller.UserBanServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetSubscription</servlet-name>
+        <servlet-class>controller.GetSubscription</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewOrderServlet</servlet-name>
+        <servlet-class>controller.NewOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderProcessingServlet</servlet-name>
+        <servlet-class>controller.OrderProcessingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaginationServlet</servlet-name>
+        <servlet-class>controller.PaginationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserSearchingServlet</servlet-name>
+        <servlet-class>controller.UserSearchingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderSearchingServlet</servlet-name>
+        <servlet-class>controller.OrderSearchingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LanguageServlet</servlet-name>
+        <servlet-class>controller.LanguageServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LanguageServlet</servlet-name>
+        <url-pattern>/lang</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderSearchingServlet</servlet-name>
+        <url-pattern>/orderSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserSearchingServlet</servlet-name>
+        <url-pattern>/userSearch</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaginationServlet</servlet-name>
+        <url-pattern>/pagination</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderProcessingServlet</servlet-name>
+        <url-pattern>/orderPrecessing</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewOrderServlet</servlet-name>
+        <url-pattern>/newOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetSubscription</servlet-name>
+        <url-pattern>/getSubscription</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserBanServlet</servlet-name>
         <url-pattern>/user_ban</url-pattern>
@@ -100,23 +166,19 @@
         <url-pattern>/delete_librarian</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ChangeBookServlet</servlet-name>
-        <url-pattern>/change_book</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>DeleteBookServlet</servlet-name>
         <url-pattern>/delete_book</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateBookServlet</servlet-name>
-        <url-pattern>/create_book</url-pattern>
+        <servlet-name>BookServlet</servlet-name>
+        <url-pattern>/book</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookPageServlet</servlet-name>
         <url-pattern>/book_page</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SortingServlet</servlet-name>
+        <servlet-name>BookSortingServlet</servlet-name>
         <url-pattern>/sort</url-pattern>
     </servlet-mapping>
     <servlet-mapping>

@@ -5,6 +5,7 @@ public class Author {
 
   private long id;
   private String authorName;
+  private String authorNameUa;
 
   public long getId() {
     return id;
@@ -22,4 +23,11 @@ public class Author {
     this.authorName = authorName;
   }
 
+  public String getAuthorNameUa() {
+    return authorNameUa;
+  }
+
+  public void setAuthorNameUa(String authorNameUa) {
+    this.authorNameUa = authorNameUa;
+  }
 }

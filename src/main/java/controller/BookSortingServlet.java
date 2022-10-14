@@ -12,47 +12,47 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class SortingServlet extends HttpServlet {
+public class BookSortingServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        //get param
         String genre = request.getParameter("genre");
         String sortBy = request.getParameter("sort");
         String bookName = request.getParameter("book");
         String authorName = request.getParameter("author");
 
+        //get dao
         BookDaoImpl bookDao = new BookDaoImpl();
-        GenreDaoImpl genreDao = new GenreDaoImpl();
         AuthorDaoImpl authorDao = new AuthorDaoImpl();
         PublisherDaoImpl publisherDao = new PublisherDaoImpl();
 
         List<Book> list = new ArrayList<>(bookDao.getAll());
         Iterator<Book> iterator = list.iterator();
 
+
         while (iterator.hasNext()) {
             Book currentBook = iterator.next();
-            if(!genre.equals("Genre")&&!genreDao.get(currentBook.getGenreId()).getGenreName().equals(genre)){
+            if((!genre.equals("")) &&currentBook.getGenreId()!=Long.parseLong(genre)){
                 iterator.remove();
                 continue;
             }
-            if(!bookName.equals("")&&!currentBook.getName().equalsIgnoreCase(bookName)){
+            if(!bookName.equals("")&&(!currentBook.getName().equalsIgnoreCase(bookName)&&!currentBook.getNameUa().equalsIgnoreCase(bookName))){
                 iterator.remove();
                 continue;
             }
-            if(!authorName.equals("")&&!authorDao.get(currentBook.getAuthorId()).getAuthorName().equalsIgnoreCase(authorName)){
+            if(!authorName.equals("")&&(!authorDao.get(currentBook.getAuthorId()).getAuthorName().equalsIgnoreCase(authorName)&&!authorDao.get(currentBook.getAuthorId()).getAuthorNameUa().equalsIgnoreCase(authorName))){
                 iterator.remove();
             }
         }
-        System.out.println(bookName);
-        System.out.println(list);
         switch (sortBy){
-            case "Sorted by":
+            case "":
                 break;
             case "name":
                 list.sort(Comparator.comparing(Book::getName));
@@ -67,7 +67,7 @@ public class SortingServlet extends HttpServlet {
                 list.sort(Comparator.comparing(Book::getDateOfPublication));
                 break;
         }
-        request.setAttribute("list", list);
+        request.getSession().setAttribute("list", list);
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(request.getParameter("page"));
         dispatcher.forward(request,response);
     }

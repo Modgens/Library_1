@@ -9,6 +9,8 @@ public class UserOrders {
   private long bookId;
   private Date orderDate;
   private Date dateToReturn;
+  private String status;
+  private String statusUa;
 
   public long getId() {
     return id;
@@ -50,4 +52,19 @@ public class UserOrders {
     this.dateToReturn = dateToReturn;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
+  public String getStatusUa() {
+    return statusUa;
+  }
+
+  public void setStatusUa(String statusUa) {
+    this.statusUa = statusUa;
+  }
 }

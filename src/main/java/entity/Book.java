@@ -3,10 +3,12 @@ package entity;
 public class Book {
     private long id;
     private String name;
+    private String nameUa;
     private long publicationId;
     private int dateOfPublication;
     private int count;
     private String description;
+    private String descriptionUa;
     private String imgName;
     private long authorId;
     private long genreId;
@@ -83,16 +85,34 @@ public class Book {
         this.dateOfPublication = dateOfPublication;
     }
 
+    public String getNameUa() {
+        return nameUa;
+    }
+
+    public void setNameUa(String nameUa) {
+        this.nameUa = nameUa;
+    }
+
+    public String getDescriptionUa() {
+        return descriptionUa;
+    }
+
+    public void setDescriptionUa(String descriptionUa) {
+        this.descriptionUa = descriptionUa;
+    }
+
     @Override
     public String toString() {
 
         return "Book{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", nameUa='" + nameUa + '\'' +
                 ", publication='" + publicationId + '\'' +
                 ", dateOfPublication='" + dateOfPublication + '\'' +
                 ", count=" + count +
                 ", description='" + description + '\'' +
+                ", descriptionUa='" + descriptionUa + '\'' +
                 ", imgName='" + imgName + '\'' +
                 ", author=" + authorId +
                 ", genre=" + genreId +

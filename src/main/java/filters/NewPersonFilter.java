@@ -3,21 +3,13 @@ package filters;
 import dao.implementation.*;
 import dao.transaction.CreateLibrarianTransaction;
 import entity.*;
-import javax.imageio.ImageIO;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import org.apache.commons.io.FilenameUtils;
 
-public class NewLibrarianFilter implements Filter {
+public class NewPersonFilter implements Filter {
     private FilterConfig config;
 
     public void init(FilterConfig config) throws ServletException {
@@ -40,7 +32,6 @@ public class NewLibrarianFilter implements Filter {
 
         //dao
         PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
-        CreateLibrarianTransaction librarianTransaction = new CreateLibrarianTransaction();
 
         //regex
         final String NAME_REGEX = "[а-яА-Яa-zA-Z]+";
@@ -82,13 +73,15 @@ public class NewLibrarianFilter implements Filter {
         if(password.matches(PASSWORD_REGEX)){
             personalInfoEntity.setPassword(password);
         } else {
-            request.setAttribute("error", "Password must have at least one numeric character, one lowercase character, one uppercase character, one special symbol among @#$% and have length between 8 and 20");
+            request.setAttribute("error", "Password must have at least one numeric character, one lowercase character, one uppercase character, one special symbol (among @#$%) and have length between 8 and 20");
             chain.doFilter(request, response);
             return;
         }
-        //final set
-        librarianTransaction.create(personalInfoEntity);
 
+        request.setAttribute("person", personalInfoEntity);
+        if(request.getParameter("email")!=null){
+            request.setAttribute("email", request.getParameter("email"));
+        }
         chain.doFilter(request,response);
     }
 }

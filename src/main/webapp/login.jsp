@@ -1,4 +1,6 @@
 <%@ page import="dao.implementation.UserDaoImpl" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@ page import="java.util.Locale" %>
 <%--
   Created by IntelliJ IDEA.
   User: Modgen
@@ -6,6 +8,18 @@
   Time: 20:09
   To change this template use File | Settings | File Templates.
 --%>
+
+<%
+
+    ResourceBundle rb = null;
+    if(session.getAttribute("rb")==null){
+        rb = ResourceBundle.getBundle("Localization/Bundle", new Locale("en", "US"));//lang by default
+    } else {
+        rb = (ResourceBundle) session.getAttribute("rb");
+    }
+
+%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,17 +30,23 @@
     <input type="hidden" id="status" value="<%= request.getAttribute("status")%>">
         <div class="text-center">
             <form method="post" action="servlet" style="max-width:480px;margin:auto;">
-                <h1 class="mb-4 mt-5">Welcome To Library</h1>
-                <input type="text" class="form-control mb-2" placeholder="Login" name="login" maxlength="30" required autofocus>
-                <input type="password" class="form-control mb-2" placeholder="Password" name="password" required autofocus>
-                <input type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" >
+                <h1 class="mb-4 mt-5"><%=rb.getString("welcome")%></h1>
+                <input type="text" class="form-control mb-2" placeholder="<%=rb.getString("login")%>" name="login" maxlength="30" required autofocus>
+                <input type="password" class="form-control mb-2" placeholder="<%=rb.getString("password")%>" name="password" required autofocus>
+                <input type="submit" value="<%=rb.getString("signIn")%>" class="btn btn-lg btn-primary btn-block" >
             </form>
             <a href="signUp.jsp">
                 <button class="btn btn-lg mt-1" style="color: blue;">
-                    Create an account
+                    <%=rb.getString("createAnAccount")%>
                 </button>
             </a>
         </div>
+    <div style="position: fixed; top: 10px; left: 10px;">
+        <a href="lang?language=ua&path=login.jsp"><img width="30px" src="images/the-ukraine-flag.jpg" alt=""></a>
+        <a href="lang?language=en&path=login.jsp"><img width="30px" src="images/usuk-flag.jpg" alt=""></a>
+    </div>
+
+
         <%@include file="includes/footer.jsp"%>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>

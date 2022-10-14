@@ -3,6 +3,7 @@ package dao.implementation;
 import dao.AdminDAO;
 import dao.PersonalInfoDAO;
 import entity.Admin;
+import util.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ public class AdminDaoImpl implements AdminDAO {
     @Override
     public Admin get(long id) {
         Admin admin = new Admin();
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM admin WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
@@ -30,7 +31,7 @@ public class AdminDaoImpl implements AdminDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return admin;
@@ -41,7 +42,7 @@ public class AdminDaoImpl implements AdminDAO {
         List<Admin> list = new ArrayList<>();
         String sql = "select * from admin";
         PreparedStatement ps;
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
@@ -51,7 +52,7 @@ public class AdminDaoImpl implements AdminDAO {
                 list.add(admin);
             }
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -59,48 +60,48 @@ public class AdminDaoImpl implements AdminDAO {
 
     @Override
     public void insert(Admin admin) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "INSERT INTO admin (id, person_id) VALUES(?, ?);";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, admin.getId());
             ps.setLong(2, admin.getPersonId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Admin admin) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "UPDATE admin SET person_id = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, admin.getId());
             ps.setLong(2, admin.getPersonId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Admin admin) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM admin WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, admin.getId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public boolean hasInfoId(long id) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM admin WHERE person_id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
@@ -110,7 +111,7 @@ public class AdminDaoImpl implements AdminDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return false;

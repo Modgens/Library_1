@@ -12,7 +12,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String status = (String) request.getAttribute("status");
         String role = (String) request.getAttribute("role");
-        long user_id = (long) request.getAttribute("user_id");
         RequestDispatcher dispatcher;
         if(status.equals("failed")){
             dispatcher = request.getRequestDispatcher("login.jsp");
@@ -20,11 +19,13 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("role", role);
             session.setAttribute("name", request.getAttribute("name"));
+            request.setAttribute("status", "");
             if(role.equals("user")){
+                long user_id = (long) request.getAttribute("user_id");
                 session.setAttribute("user_id", user_id);
             }
 
-            dispatcher = request.getRequestDispatcher("index.jsp");
+            dispatcher = request.getRequestDispatcher("catalog.jsp");
         }
         dispatcher.forward(request, response);
     }

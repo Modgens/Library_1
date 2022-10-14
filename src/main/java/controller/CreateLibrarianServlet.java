@@ -1,13 +1,7 @@
 package controller;
 
-import dao.implementation.AuthorDaoImpl;
-import dao.implementation.BookDaoImpl;
-import dao.implementation.GenreDaoImpl;
-import dao.implementation.PublisherDaoImpl;
-import entity.Author;
-import entity.Book;
-import entity.Genre;
-import entity.Publisher;
+import dao.transaction.CreateLibrarianTransaction;
+import entity.PersonalInfo;
 
 import javax.servlet.*;
 import javax.servlet.annotation.MultipartConfig;
@@ -23,6 +17,9 @@ public class CreateLibrarianServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("new_librarian.jsp");
 
         if(request.getAttribute("error").equals("")){
+            //final set
+            CreateLibrarianTransaction librarianTransaction = new CreateLibrarianTransaction();
+            librarianTransaction.create((PersonalInfo)request.getAttribute("person"));
             request.setAttribute("status", "success");
         } else {
             request.setAttribute("status", "failed");

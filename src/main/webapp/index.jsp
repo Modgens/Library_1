@@ -1,4 +1,5 @@
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
+
 <!doctype html>
 <html lang="en">
 
@@ -12,8 +13,7 @@
 <h1><%=session.getAttribute("role")%></h1>
 <h2><%=session.getId()%></h2>
 
-    </div>
-  </div>
+
 <%@include file="includes/footer.jsp"%>
 </body>
 </html>

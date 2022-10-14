@@ -2,6 +2,7 @@ package dao.transaction;
 
 import entity.Librarian;
 import entity.PersonalInfo;
+import util.ConnectionPool;
 
 import static util.Connector.getConnection;
 import java.sql.Connection;
@@ -13,7 +14,7 @@ public class CreateLibrarianTransaction {
     public void create(PersonalInfo personalInfo){
         Connection con = null;
         try {
-            con = getConnection();
+            con = ConnectionPool.getInstance().getConnection();
             con.setAutoCommit(false);
 
             String sql = "INSERT INTO personal_info (first_name, last_name, login, password) VALUES(?,?,?,?)";
@@ -40,7 +41,7 @@ public class CreateLibrarianTransaction {
             ps.executeUpdate();
             ps.close();
             con.commit();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             if (con != null) {
                 try {

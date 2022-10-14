@@ -4,6 +4,7 @@ public class Publisher {
 
   private long id;
   private String publisherName;
+  private String publisherNameUa;
 
 
   public long getId() {
@@ -23,4 +24,11 @@ public class Publisher {
     this.publisherName = publisherName;
   }
 
+  public String getPublisherNameUa() {
+    return publisherNameUa;
+  }
+
+  public void setPublisherNameUa(String publisherNameUa) {
+    this.publisherNameUa = publisherNameUa;
+  }
 }

@@ -3,6 +3,7 @@ package dao.implementation;
 import dao.LibrarianDAO;
 import dao.PersonalInfoDAO;
 import entity.Librarian;
+import util.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +18,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
 
     @Override
     public boolean hasInfoId(long id) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM librarian WHERE person_id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
@@ -27,7 +28,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return false;
@@ -35,7 +36,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
     @Override
     public Librarian get(long id) {
         Librarian librarian = new Librarian();
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "SELECT * FROM librarian WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
@@ -47,7 +48,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             }
             rs.close();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return librarian;
@@ -58,7 +59,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
         List<Librarian> list = new ArrayList<>();
         String sql = "select * from librarian";
         PreparedStatement ps;
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
@@ -68,7 +69,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
                 list.add(librarian);
             }
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
@@ -76,40 +77,40 @@ public class LibrarianDaoImpl implements LibrarianDAO {
 
     @Override
     public void insert(Librarian librarian) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "INSERT INTO librarian (person_id) VALUES(?);";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getPersonId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Librarian librarian) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "UPDATE librarian SET person_id = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getPersonId());
             ps.setLong(2, librarian.getId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Librarian librarian) {
-        try(Connection con = getConnection()) {
+        try(Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM librarian WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getId());
             ps.executeUpdate();
             ps.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
