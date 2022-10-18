@@ -16,11 +16,13 @@ public class DeleteBookServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BookDaoImpl bookDao = new BookDaoImpl();
         Book book = bookDao.get(Long.parseLong(request.getParameter("book_id")));
-        if(!book.getImgName().equals("book0.jsp")){
-            File f = new File("C:\\Users\\Modgen\\IdeaProjects\\Library_1\\src\\main\\webapp\\book_images\\"+book.getImgName());
-            f.delete();
+        if(bookDao.get(book.getId()).getId()!=0L) {
+            bookDao.delete(book);
+            if (!book.getImgName().equals("book0.jsp")) {
+                File f = new File("C:\\Users\\Modgen\\IdeaProjects\\Library_1\\src\\main\\webapp\\book_images\\" + book.getImgName());
+                f.delete();
+            }
         }
-        bookDao.delete(book);
 
         RequestDispatcher dispatcher = request .getRequestDispatcher("books.jsp");
 

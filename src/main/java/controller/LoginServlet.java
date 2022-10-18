@@ -1,7 +1,5 @@
 package controller;
 
-import entity.User;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -24,7 +22,6 @@ public class LoginServlet extends HttpServlet {
                 long user_id = (long) request.getAttribute("user_id");
                 session.setAttribute("user_id", user_id);
             }
-
             dispatcher = request.getRequestDispatcher("catalog.jsp");
         }
         dispatcher.forward(request, response);

@@ -18,8 +18,7 @@ public class CreateLibrarianServlet extends HttpServlet {
 
         if(request.getAttribute("error").equals("")){
             //final set
-            CreateLibrarianTransaction librarianTransaction = new CreateLibrarianTransaction();
-            librarianTransaction.create((PersonalInfo)request.getAttribute("person"));
+            CreateLibrarianTransaction.getInstance().create((PersonalInfo)request.getAttribute("person"));
             request.setAttribute("status", "success");
         } else {
             request.setAttribute("status", "failed");

@@ -1,16 +1,22 @@
 package dao.transaction;
 
-import entity.Librarian;
 import entity.PersonalInfo;
 import util.ConnectionPool;
-
-import static util.Connector.getConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CreateLibrarianTransaction {
+    private static CreateLibrarianTransaction instance;
+
+    private CreateLibrarianTransaction(){}
+    public static CreateLibrarianTransaction getInstance(){
+        if(instance==null)
+            instance=new CreateLibrarianTransaction();
+        return instance;
+    }
+
     public void create(PersonalInfo personalInfo){
         Connection con = null;
         try {
@@ -43,13 +49,11 @@ public class CreateLibrarianTransaction {
             con.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (con != null) {
-                try {
-                    System.err.print("Transaction is being rolled back");
-                    con.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
+            try {
+                System.err.print("Transaction is being rolled back");
+                con.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
             }
         }
     }

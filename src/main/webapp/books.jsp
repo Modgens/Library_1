@@ -23,7 +23,7 @@
     AuthorDaoImpl authorDao = new AuthorDaoImpl();
     GenreDaoImpl genreDao = new GenreDaoImpl();
     PublisherDaoImpl publisherDao = new PublisherDaoImpl();
-    List<Book> list = (List<Book>) session.getAttribute("list");
+    List<Book> list = (List<Book>) session.getAttribute("books_list");
     if(list == null)
         list = bookDaoImpl.getAll();
 %>

@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static util.Connector.getConnection;
-
 public class AuthorDaoImpl implements AuthorDAO {
 
     public long idFromName(String name, String nameUa) {
@@ -22,23 +20,6 @@ public class AuthorDaoImpl implements AuthorDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, name);
             ps.setString(2, nameUa);
-            ResultSet rs = ps.executeQuery();
-            if(rs.next()){
-                id = rs.getInt("id");
-            }
-            rs.close();
-            ps.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return id;
-    }
-    public long idFromName(String name) {
-        long id=0L;
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
-            String sql = "SELECT * FROM author WHERE  author_name = ? or author_name_ua = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 id = rs.getInt("id");

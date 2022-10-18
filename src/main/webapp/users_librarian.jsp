@@ -4,6 +4,7 @@
 <%@ page import="entity.Subscriptions" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -75,6 +76,7 @@
     <th scope="col"><%=rb.getString("fName")%></th>
     <th scope="col"><%=rb.getString("lName")%></th>
     <th scope="col"><%=rb.getString("email")%></th>
+    <th scope="col"><%=rb.getString("allFine")%></th>
     <th scope="col"><%=rb.getString("login")%></th>
     <th scope="col"><%=rb.getString("ss")%></th>
     <th scope="col"><%=rb.getString("se")%></th>
@@ -84,6 +86,7 @@
   <tbody>
 
   <%
+    Punisher punisher = Punisher.getInstance();
     int i = 0;
     int end = 14;
     if(!list.isEmpty()){
@@ -105,6 +108,7 @@
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getFirstName()%></td>
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLastName()%></td>
     <td><%=list.get(i).getEmail()%></td>
+    <td><%=punisher.usersFineSum(list.get(i).getId())%> ₴</td>
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLogin()%></td>
     <td><%=subscriptions.getStartDate()%></td>
     <td><%=subscriptions.getEndDate()%></td>

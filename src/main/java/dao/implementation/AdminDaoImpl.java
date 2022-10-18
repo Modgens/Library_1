@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static util.Connector.getConnection;
 
 public class AdminDaoImpl implements AdminDAO {
 

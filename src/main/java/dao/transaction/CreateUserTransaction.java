@@ -1,15 +1,11 @@
 package dao.transaction;
 
 import entity.PersonalInfo;
-import entity.User;
 import util.ConnectionPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static util.Connector.getConnection;
 
 public class CreateUserTransaction {
     public void create(PersonalInfo personalInfo, String email, String status){
@@ -46,13 +42,11 @@ public class CreateUserTransaction {
             con.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            if (con != null) {
-                try {
-                    System.err.print("Transaction is being rolled back");
-                    con.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
+            try {
+                System.err.print("Transaction is being rolled back");
+                con.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
             }
         }
     }

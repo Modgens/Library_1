@@ -39,7 +39,7 @@ public class LoginFilter implements Filter {
         if(infoId!=0){//if id==0   =>   there is empty entity
             if(userDao.hasInfoId(infoId)){
                 if(userDao.getStatusFromPersonInfoID(infoId).equals("baned")){
-                    request.setAttribute("error", "You are baned!");
+                    request.setAttribute("error", "You are baned! | Ви забанені!");
                     request.setAttribute("status", "failed");
                     chain.doFilter(request, response);
                     return;
@@ -54,11 +54,10 @@ public class LoginFilter implements Filter {
                 request.setAttribute("role", "admin");
             }
             request.setAttribute("status", "success");
-            request.setAttribute("name", personalInfo.getFirstName()+" "+personalInfo.getLastName());
+            request.setAttribute("name", personalInfo.getFirstName() + " " + personalInfo.getLastName());
         }else{
-            System.out.println("error");
             request.setAttribute("status", "failed");
-            request.setAttribute("error", "Wrong Username or Password");
+            request.setAttribute("error", "Wrong Username or Password | Не правильний логін або пароль");
         }
         chain.doFilter(request, response);
     }

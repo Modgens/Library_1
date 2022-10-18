@@ -3,6 +3,7 @@
 <%@ page import="entity.*" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
@@ -45,12 +46,15 @@
     <th scope="col"><%=rb.getString("orderDate")%></th>
     <th scope="col"><%=rb.getString("dateToReturn")%></th>
     <th scope="col"><%=rb.getString("status")%></th>
+    <th scope="col"><%=rb.getString("fine")%></th>
+
   </tr>
   </thead>
   <tbody>
 
   <%
     if(!list.isEmpty()){
+      Punisher punisher = Punisher.getInstance();
       for (UserOrders userOrders : list) {
         Book book = bookDaoImpl.get(userOrders.getBookId());
         String orderDate = lang.equals("en")?"Not Order Yet": "Ще не оформлений";
@@ -72,6 +76,7 @@
     <td><%=orderDate%></td>
     <td><%=dateToReturn%></td>
     <td><%=userOrders.getStatus()%></td>
+    <td><%=punisher.getByOrderId(userOrders.getId())%> ₴</td>
   </tr>
   <%} else {%>
   <tr>
@@ -84,6 +89,7 @@
     <td><%=orderDate%></td>
     <td><%=dateToReturn%></td>
     <td><%=userOrders.getStatusUa()%></td>
+    <td><%=punisher.getByOrderId(userOrders.getId())%> ₴</td>
   </tr>
   <%
         }

@@ -35,70 +35,35 @@ public class NavBar extends SimpleTagSupport {
     StringWriter sw = new StringWriter();
     public void doTag() throws JspException, IOException {
         if (message != null && role!=null && lang!=null) {
-            ResourceBundle rb = null;
+            ResourceBundle rb;
             if(lang.equals("en")){
                 rb = ResourceBundle.getBundle("Localization/Bundle", new Locale("en", "US"));
             } else {
                 rb = ResourceBundle.getBundle("Localization/Bundle", new Locale("ua", "UA"));
             }
 
-            String catalogIsActive="";
-            String booksIsActive="";
-            String librarianIsActive="";
-            String userIsActive="";
-            String myBooks="";
-            String orders="";
-            String userLibrarians="";
-            String readingRoom="";
+            String line1= "";
+            String line2= "";
+            String line3= "";
 
-            String line1="";
-            String line2="";
-            String line3="";
-
-            String personalAccount ="" ;
-
-            switch (message){
-                case "catalog":
-                    catalogIsActive="active";
-                    break;
-                case "books":
-                    booksIsActive="active";
-                    break;
-                case "librarians":
-                    librarianIsActive="active";
-                    break;
-                case "users":
-                    userIsActive="active";
-                    break;
-                case "myBooks":
-                    myBooks="active";
-                    break;
-                case "orders":
-                    orders="active";
-                    break;
-                case "users_librarian":
-                    userLibrarians="active";
-                    break;
-                case "reading_room":
-                    readingRoom="active";
-                    break;
-
-            }
+            String personalAccount = "";
 
             switch (role){
                 case "user":
                     personalAccount = "<li><a class=\"dropdown-item\" href=\"personal_account.jsp\">"+rb.getString("pa")+"</a></li>\n<li><hr class=\"dropdown-divider\"></li>\n";
-                    line1=newLink(myBooks, rb.getString("myOrders"), "myOrders.jsp");
+                    line1=newLink((message.equals("myBooks")?"active":""), rb.getString("myOrders"), "myOrders.jsp");
                     break;
                 case "librarian":
-                    line1=newLink(userLibrarians, rb.getString("users"), "users_librarian.jsp");
-                    line2=newLink(orders, rb.getString("orders"),"user_orders.jsp");
-                    line3=newLink(readingRoom,rb.getString("readingRoom"), "reading_room.jsp");
+                    line1=newLink((message.equals("users_librarian")?"active":""), rb.getString("users"), "users_librarian.jsp");
+                    line2=newLink((message.equals("orders")?"active":""), rb.getString("orders"),"user_orders.jsp");
+                    line3=newLink((message.equals("reading_room")?"active":""),rb.getString("readingRoom"), "reading_room.jsp");
                     break;
                 case "admin":
-                    line1=newLink(booksIsActive, rb.getString("books"), "books.jsp");
-                    line2=newLink(librarianIsActive, rb.getString("librarians"),"librarians.jsp");
-                    line3=newLink(userIsActive, rb.getString("users"), "users.jsp");
+                    line1=newLink((message.equals("books")?"active":""), rb.getString("books"), "books.jsp");
+                    line2=newLink((message.equals("librarians")?"active":""), rb.getString("librarians"),"librarians.jsp");
+                    line3=newLink((message.equals("users")?"active":""), rb.getString("users"), "users.jsp");
+                    break;
+                case "guest":
                     break;
             }
 
@@ -115,7 +80,7 @@ public class NavBar extends SimpleTagSupport {
                     "    <div class=\"collapse navbar-collapse\" id=\"navbarScroll\">\n" +
                     "      <ul class=\"navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll\" style=\"--bs-scroll-height: 100px;\">\n" +
                     "        <li class=\"nav-item\">\n" +
-                    "          <a class=\"nav-link "+catalogIsActive+"\" href=\"atalog.jsp\">"+rb.getString("catalog")+"</a>\n" +
+                    "          <a class=\"nav-link "+(message.equals("catalog")?"active":"")+"\" href=\"catalog.jsp\">"+rb.getString("catalog")+"</a>\n" +
                     "        </li>\n" + line1+line2+line3+
                     "        <li class=\"nav-item dropdown d-flex\">\n" +
                     "          <a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\n" +

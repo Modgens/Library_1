@@ -9,8 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static util.Connector.getConnection;
-
 public class UserDaoImpl implements UserDAO {
 
     @Override

@@ -40,12 +40,17 @@
                     <%=rb.getString("createAnAccount")%>
                 </button>
             </a>
+            <br>
+            <a href="catalog.jsp">
+                <button class="btn btn-lg mt-1" style="color: green;">
+                    <%=rb.getString("guestIn")%>
+                </button>
+            </a>
         </div>
     <div style="position: fixed; top: 10px; left: 10px;">
         <a href="lang?language=ua&path=login.jsp"><img width="30px" src="images/the-ukraine-flag.jpg" alt=""></a>
         <a href="lang?language=en&path=login.jsp"><img width="30px" src="images/usuk-flag.jpg" alt=""></a>
     </div>
-
 
         <%@include file="includes/footer.jsp"%>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>

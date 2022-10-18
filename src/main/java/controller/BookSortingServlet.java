@@ -13,10 +13,6 @@ import java.util.*;
 
 
 public class BookSortingServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ;
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,6 +23,7 @@ public class BookSortingServlet extends HttpServlet {
         String sortBy = request.getParameter("sort");
         String bookName = request.getParameter("book");
         String authorName = request.getParameter("author");
+        String page = request.getParameter("page");
 
         //get dao
         BookDaoImpl bookDao = new BookDaoImpl();
@@ -67,8 +64,8 @@ public class BookSortingServlet extends HttpServlet {
                 list.sort(Comparator.comparing(Book::getDateOfPublication));
                 break;
         }
-        request.getSession().setAttribute("list", list);
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(request.getParameter("page"));
+        request.getSession().setAttribute(page.equals("/catalog.jsp") ? "catalog_list" : "books_list", list);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request,response);
     }
 }

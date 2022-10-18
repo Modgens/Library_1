@@ -3,6 +3,7 @@
 <%@ page import="entity.UserOrders" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -83,6 +84,7 @@
     <th scope="col"><%=rb.getString("genre")%></th>
     <th scope="col"><%=rb.getString("publisher")%></th>
     <th scope="col"><%=rb.getString("dateOfPublication")%></th>
+    <th scope="col"><%=rb.getString("fine")%></th>
     <th scope="col"><%=rb.getString("fName")%></th>
     <th scope="col"><%=rb.getString("lName")%></th>
     <th scope="col"><%=rb.getString("login")%></th>
@@ -95,6 +97,8 @@
   </thead>
   <tbody>
   <%
+    Punisher punisher = Punisher.getInstance();
+
     int i = 0;
     int end = 14;
     if(!list.isEmpty()){
@@ -115,6 +119,7 @@
       <td>${genreDao.get(bookDao.get( list.get(i).bookId).genreId).genreName}</td>
       <td>${publisherDao.get(bookDao.get( list.get(i).bookId).publicationId).publisherName}</td>
       <td>${bookDao.get( list.get(i).bookId).dateOfPublication}</td>
+      <td><%=punisher.getByOrderId(list.get(i).getId())%> ₴</td>
       <td>${personalInfoDao.get(userDao.get( list.get(i).userId).personId).firstName}</td>
       <td>${personalInfoDao.get(userDao.get( list.get(i).userId).personId).lastName}</td>
       <td>${personalInfoDao.get(userDao.get( list.get(i).userId).personId).login}</td>

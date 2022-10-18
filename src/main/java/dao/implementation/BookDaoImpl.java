@@ -8,8 +8,6 @@ import util.ConnectionPool;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import static util.Connector.getConnection;
-
 
 public class
 BookDaoImpl implements BookDAO {
@@ -139,16 +137,4 @@ BookDaoImpl implements BookDAO {
             throw new RuntimeException(e);
         }
     }
-    public void deleteById(Long id) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
-            String sql = "DELETE FROM book WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setLong(1, id);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

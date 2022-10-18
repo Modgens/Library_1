@@ -1,11 +1,11 @@
 package controller;
 
-import util.ConnectionPool;
-
-import java.sql.Connection;
+import java.util.logging.Logger;
 
 public class Demo {
+    static final Logger logger = Logger.getLogger(String.valueOf(Demo.class));
+
     public static void main(String[] args) {
-        Connection con = ConnectionPool.getInstance().getConnection();
+        logger.info("blabla");
     }
 }

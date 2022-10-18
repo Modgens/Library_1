@@ -1,13 +1,10 @@
 package dao.transaction;
 
 import util.ConnectionPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import static util.Connector.getConnection;
 
 public class LibrarianDeleteTransaction {
 
@@ -36,18 +33,17 @@ public class LibrarianDeleteTransaction {
             String sql3 = "DELETE FROM dblibrary.personal_info WHERE id = ?";
             ps = con.prepareStatement(sql3);
             ps.setLong(1, personId);
+            ps.executeUpdate();
             ps.close();
 
             con.commit();
         } catch (SQLException e) {
-            e.getMessage();
-            if (con != null) {
-                try {
-                    System.err.print("Transaction is being rolled back");
-                    con.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
+            e.printStackTrace();
+            try {
+                System.err.print("Transaction is being rolled back");
+                con.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
             }
         }
     }

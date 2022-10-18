@@ -3,6 +3,7 @@
 <%@ page import="entity.User" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="util.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
@@ -71,14 +72,15 @@
     <th scope="col"><%=rb.getString("fName")%></th>
     <th scope="col"><%=rb.getString("lName")%></th>
     <th scope="col"><%=rb.getString("email")%></th>
+    <th scope="col"><%=rb.getString("allFine")%></th>
     <th scope="col"><%=rb.getString("login")%></th>
     <th scope="col"><%=rb.getString("password")%></th>
     <th scope="col"><%=rb.getString("status")%></th>
   </tr>
   </thead>
   <tbody>
-
   <%
+    Punisher punisher = Punisher.getInstance();
     int i = 0;
     int end = 14;
     if(!list.isEmpty()){
@@ -96,6 +98,7 @@
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getFirstName()%></td>
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLastName()%></td>
     <td><%=list.get(i).getEmail()%></td>
+    <td><%=punisher.usersFineSum(list.get(i).getId())%> ₴</td>
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLogin()%></td>
     <td><%=personalInfoDao.get(list.get(i).getPersonId()).getPassword()%></td>
     <td><button type="button" class="btn btn-outline-<%=list.get(i).getStatus().equals("baned")?"success":"danger"%>"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/user_ban?user_id=<%=list.get(i).getId()%>"><%=list.get(i).getStatus().equals("baned")?rb.getString("unban"):rb.getString("ban")%></a></button></td>
