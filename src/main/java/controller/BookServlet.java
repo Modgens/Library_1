@@ -16,6 +16,7 @@ public class BookServlet extends HttpServlet {
         }else {
             request.setAttribute("status", "failed");
         }
+        System.out.println(dispatcher);
         dispatcher.forward(request,response);
     }
 }

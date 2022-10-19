@@ -7,14 +7,6 @@
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
-        <error-code>404</error-code>
-        <location>/errors/404/index.html</location>
-    </error-page>
-    <error-page>
-        <error-code>500</error-code>
-        <location>/errors/500/index.html</location>
-    </error-page>
 
     <filter>
         <filter-name>NewOrderFilter</filter-name>

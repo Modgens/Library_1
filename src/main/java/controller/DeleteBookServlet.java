@@ -23,7 +23,6 @@ public class DeleteBookServlet extends HttpServlet {
                 f.delete();
             }
         }
-
         RequestDispatcher dispatcher = request .getRequestDispatcher("books.jsp");
 
         dispatcher.forward(request,response);

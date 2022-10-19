@@ -25,9 +25,6 @@ public class BookFilter implements Filter {
         System.out.println("filter-new-book");
     }
 
-    public void destroy() {
-    }
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
@@ -42,6 +39,13 @@ public class BookFilter implements Filter {
         //Entity
         String book_id = request.getParameter("book_id");
         Book bookEntity = book_id==null ? new Book() : bookDao.get(Long.parseLong(book_id));
+
+        //PATH write
+        if(book_id==null){
+            request.setAttribute("path", "new_book.jsp");
+        } else {
+            request.setAttribute("path", "change_book.jsp");
+        }
 
         //regex
         final String SIMPLE_REGEX = "[^%{}<>]+";
@@ -164,15 +168,12 @@ public class BookFilter implements Filter {
             bookEntity.setImgName(fileName);
         }
 
-
         //final set
         bookEntity.setGenreId(Long.parseLong(request.getParameter("genre")));
         if(book_id==null){
             bookDao.insert(bookEntity);
-            request.setAttribute("path", "new_book.jsp");
         } else {
             bookDao.update(bookEntity);
-            request.setAttribute("path", "change_book.jsp");
         }
         chain.doFilter(request,response);
     }
