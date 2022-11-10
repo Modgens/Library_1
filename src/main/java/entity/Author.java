@@ -3,19 +3,28 @@ package entity;
 
 public class Author {
 
-  private long id;
-  private String authorName;
-  private String authorNameUa;
+    private long id;
+    private String authorName;
+    private String authorNameUa;
 
-  public long getId() {
-    return id;
-  }
+    public Author(long id, String authorName, String authorNameUa) {
+        this.id = id;
+        this.authorName = authorName;
+        this.authorNameUa = authorNameUa;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public Author() {
+    }
 
-  public String getAuthorName() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getAuthorName() {
     return authorName;
   }
 

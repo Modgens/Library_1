@@ -1,9 +1,9 @@
 package filters;
 
-import dao.SubscriptionsDAO;
-import dao.implementation.*;
-import entity.Book;
-import entity.UserOrders;
+import dao.implementation.BookDaoImpl;
+import dao.implementation.SubscriptionsDaoImpl;
+import dao.implementation.UserOrdersDaoImpl;
+import service.Validator;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +16,6 @@ public class NewOrderFilter implements Filter {
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
-        System.out.println("new-order-filter");
-    }
-
-    public void destroy() {
     }
 
     @Override
@@ -27,61 +23,23 @@ public class NewOrderFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         request.setAttribute("error", "");
+        request.setCharacterEncoding("utf-8");
 
         //get param
         long userId = Long.parseLong(request.getParameter("user_id"));
         long bookId = Long.parseLong(request.getParameter("book_id"));
         String status = request.getParameter("orderStatus");
+        String ordersStatusUa = request.getParameter("orderStatusUa");
+
 
         //dao
         UserOrdersDaoImpl userOrdersDao = new UserOrdersDaoImpl();
         BookDaoImpl bookDao = new BookDaoImpl();
         SubscriptionsDaoImpl subscriptionsDao = new SubscriptionsDaoImpl();
 
-        //entity
-        Book book = bookDao.get(bookId);
-        UserOrders userOrders = new UserOrders();
-
-        //count
-        int bookCountInOrder = userOrdersDao.bookCountInUsers(bookId);
-        int bookCount = book.getCount();
-
-        //subscribe validation
-
-        if(subscriptionsDao.getFromUserDao(userId) == null){
-            request.setAttribute("error", "Sorry, but You should get subscription in your Personal Account page");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        //count validation
-        if (bookCount<=bookCountInOrder){
-            request.setAttribute("error", "Sorry, but we do not have this book in stock at the moment");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        //user already has one
-        if(userOrdersDao.userAlreadyHasThisBook(bookId, userId)){
-            request.setAttribute("error", "You have already rented this book");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        //users can't have more than 10 book for one
-        if (userOrdersDao.countOrderedOneUser(userId)>=10){
-            request.setAttribute("error", "Sorry, but You can't order more than 10 book");
-            chain.doFilter(request, response);
-            return;
-        }
-
-        userOrders.setStatus(status);
-        userOrders.setUserId(userId);
-        userOrders.setBookId(bookId);
-        userOrders.setStatusUa(request.getParameter("orderStatusUa"));
-
-        userOrdersDao.insert(userOrders);
-
+        String error = Validator.getInstance().newOrderValidation(userId, bookId, status, ordersStatusUa, userOrdersDao, bookDao, subscriptionsDao);
+        if (error != null)
+            request.setAttribute("error", error);
         chain.doFilter(request, response);
     }
 }

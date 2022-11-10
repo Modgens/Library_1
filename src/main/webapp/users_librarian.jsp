@@ -4,7 +4,7 @@
 <%@ page import="entity.Subscriptions" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="util.Punisher" %>
+<%@ page import="dao.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -97,9 +97,9 @@
         end = (int) request.getAttribute("lastObj") - 1;
       }
     }
+    Subscriptions subscriptions = null;
     while (i <= end && !list.isEmpty()) {
       int count = userOrdersDao.countOrderedOneUser(list.get(i).getId());
-      Subscriptions subscriptions = null;
       subscriptions = subscriptionsDao.getFromUserDao(list.get(i).getId());
       if(subscriptions!=null){
   %>
@@ -113,11 +113,10 @@
     <td><%=subscriptions.getStartDate()%></td>
     <td><%=subscriptions.getEndDate()%></td>
     <td><%=count%></td>
-
   </tr>
   <%
-      i++;
     }
+      i++;
     }
     int current_page = 1;
     if(request.getAttribute("page")!=null)

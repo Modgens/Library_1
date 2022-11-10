@@ -2,21 +2,28 @@ package entity;
 
 public class Publisher {
 
-  private long id;
-  private String publisherName;
-  private String publisherNameUa;
+    private long id;
+    private String publisherName;
+    private String publisherNameUa;
 
+    public Publisher() {
+    }
 
-  public long getId() {
-    return id;
-  }
+    public Publisher(long id, String publisherName, String publisherNameUa) {
+        this.id = id;
+        this.publisherName = publisherName;
+        this.publisherNameUa = publisherNameUa;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
-  public String getPublisherName() {
+    public String getPublisherName() {
     return publisherName;
   }
 

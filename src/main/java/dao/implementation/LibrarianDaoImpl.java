@@ -11,9 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class LibrarianDaoImpl implements LibrarianDAO {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(GenreDaoImpl.class));
     @Override
     public boolean hasInfoId(long id) {
         try(Connection con = ConnectionPool.getInstance().getConnection()) {
@@ -22,6 +23,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
+                logger.info("find one librarian with id - " + id);
                 return true;
             }
             rs.close();
@@ -29,6 +31,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        logger.info("no one librarian with id - " + id);
         return false;
     }
     @Override
@@ -47,6 +50,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to find librarian with id - " + id);
             throw new RuntimeException(e);
         }
         return librarian;
@@ -68,6 +72,7 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all librarians from db");
             throw new RuntimeException(e);
         }
         return list;
@@ -75,20 +80,29 @@ public class LibrarianDaoImpl implements LibrarianDAO {
 
     @Override
     public void insert(Librarian librarian) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (librarian == null) {
+            logger.info("librarian is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "INSERT INTO librarian (person_id) VALUES(?);";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getPersonId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert librarian with personal id - " + librarian.getPersonId());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Librarian librarian) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (librarian == null) {
+            logger.info("librarian is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "UPDATE librarian SET person_id = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getPersonId());
@@ -96,19 +110,25 @@ public class LibrarianDaoImpl implements LibrarianDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update librarian with id - " + librarian.getId());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Librarian librarian) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (librarian == null) {
+            logger.info("librarian is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM librarian WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, librarian.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete librarian with id - " + librarian.getId());
             throw new RuntimeException(e);
         }
     }

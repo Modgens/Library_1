@@ -5,12 +5,16 @@ import dao.UserDAO;
 import entity.User;
 import util.ConnectionPool;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UserDaoImpl implements UserDAO {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(UserDaoImpl.class));
     @Override
     public boolean hasInfoId(long id) {
         try(Connection con = ConnectionPool.getInstance().getConnection()) {
@@ -24,6 +28,7 @@ public class UserDaoImpl implements UserDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to find user with personal info id - " + id);
             throw new RuntimeException(e);
         }
         return false;
@@ -47,6 +52,7 @@ public class UserDaoImpl implements UserDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get user with user id - " + id);
             throw new RuntimeException(e);
         }
         return user;
@@ -70,6 +76,7 @@ public class UserDaoImpl implements UserDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all users");
             throw new RuntimeException(e);
         }
         return list;
@@ -86,6 +93,7 @@ public class UserDaoImpl implements UserDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert user with personal info id - " + user.getPersonId());
             throw new RuntimeException(e);
         }
     }
@@ -99,10 +107,10 @@ public class UserDaoImpl implements UserDAO {
             ps.setString(2, user.getEmail());
             ps.setString(3, user.getStatus());
             ps.setLong(4, user.getId());
-
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update user with id - " + user.getId());
             throw new RuntimeException(e);
         }
     }
@@ -116,6 +124,7 @@ public class UserDaoImpl implements UserDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete user with id - " + user.getId());
             throw new RuntimeException(e);
         }
     }
@@ -133,6 +142,7 @@ public class UserDaoImpl implements UserDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get user status with personal info id - " + infoId);
             throw new RuntimeException(e);
         }
         return status;
@@ -151,6 +161,7 @@ public class UserDaoImpl implements UserDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get user id with personal info id - " + infoId);
             throw new RuntimeException(e);
         }
         return id;

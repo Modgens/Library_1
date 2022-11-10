@@ -32,7 +32,7 @@
 </head>
 <body>
 <input type="hidden" id="status" value="<%= request.getAttribute("status")%>">
-<nav:Navbar message="" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>' lang="eng"/>
+<nav:Navbar message="" role='<%=(String)session.getAttribute("role")%>' name='<%=(String) session.getAttribute("name")%>' lang="<%=lang%>"/>
 <div class="card w-50 mt-3 mx-auto">
   <div class="card-body">
     <h5 class="card-title"><%=personalInfo.getFirstName()+" "+personalInfo.getLastName()%></h5>
@@ -43,11 +43,10 @@
     <%
       if(subscriptionsDao.getFromUserDao(user.getId())==null){
         %>
-    <button type="button" class="btn btn-outline-success">
-      <a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/getSubscription?user_id=<%=user.getId()%>">
-        <%=rb.getString("getSub")%>
-      </a>
-    </button>
+    <form action="getSubscription" method="post">
+      <input type="hidden" name="user_id" value="<%=user.getId()%>">
+      <input type="submit" class="btn btn-outline-success" value="<%=rb.getString("getSub")%>">
+    </form>
       <%
       }else{
         %>

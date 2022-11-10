@@ -3,6 +3,8 @@
 <%@ page import="dao.implementation.*" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="entity.megaEntity.MegaLibrarian" %>
+<%@ page import="dao.megaEntity.MegaLibrarianDaoImpl" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%
@@ -14,11 +16,9 @@
   }
   String lang = rb.getString("language");
 
-  LibrarianDaoImpl librarianDao = new LibrarianDaoImpl();
-  PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
-  List<Librarian> list = (List<Librarian>) request.getAttribute("list");
+  List<MegaLibrarian> list = (List<MegaLibrarian>) request.getAttribute("list");
   if(list == null)
-    list = librarianDao.getAll();
+    list = MegaLibrarianDaoImpl.getInstance().getAll();
 %>
 
 <!doctype html>
@@ -47,15 +47,18 @@
 
   <%
     if(!list.isEmpty()){
-      for (Librarian librarian : list) {
+      for (MegaLibrarian librarian : list) {
   %>
   <tr>
     <td><%=librarian.getId()%></td>
-    <td><%=personalInfoDao.get(librarian.getPersonId()).getFirstName()%></td>
-    <td><%=personalInfoDao.get(librarian.getPersonId()).getLastName()%></td>
-    <td><%=personalInfoDao.get(librarian.getPersonId()).getLogin()%></td>
-    <td><%=personalInfoDao.get(librarian.getPersonId()).getPassword()%></td>
-    <td><button type="button" class="btn btn-outline-danger"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/delete_librarian?librarian_id=<%=librarian.getId()%>"><%=rb.getString("delete")%></a></button></td>
+    <td><%=librarian.getPersonalInfo().getFirstName()%></td>
+    <td><%=librarian.getPersonalInfo().getLastName()%></td>
+    <td><%=librarian.getPersonalInfo().getLogin()%></td>
+    <td><%=librarian.getPersonalInfo().getPassword()%></td>
+    <form method="post" action="delete_librarian">
+      <input type="hidden" name="librarian_id" value="<%=librarian.getId()%>">
+      <td><input type="submit" class="btn btn-outline-danger" value="<%=rb.getString("delete")%>"></td>
+    </form>
   </tr>
   <%}
   }

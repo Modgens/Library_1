@@ -7,6 +7,8 @@
 <%@ page import="dao.implementation.PublisherDaoImpl" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="dao.megaEntity.MegaBookDaoImpl" %>
+<%@ page import="entity.megaEntity.MegaBook" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -19,13 +21,9 @@
     }
     String lang = rb.getString("language");
 
-    BookDaoImpl bookDaoImpl = new BookDaoImpl();
-    AuthorDaoImpl authorDao = new AuthorDaoImpl();
-    GenreDaoImpl genreDao = new GenreDaoImpl();
-    PublisherDaoImpl publisherDao = new PublisherDaoImpl();
-    List<Book> list = (List<Book>) session.getAttribute("books_list");
+    List<MegaBook> list = (List<MegaBook>) session.getAttribute("books_list");
     if(list == null)
-        list = bookDaoImpl.getAll();
+        list = MegaBookDaoImpl.getInstance().getAll();
 %>
 
 <!doctype html>
@@ -49,7 +47,7 @@
                 <select name="genre" class="form-select" aria-label="Default select example">
                     <option value="" selected><%=rb.getString("genre")%></option>
                     <%
-                        for (Genre genre : genreDao.getAll()) {
+                        for (Genre genre : new GenreDaoImpl().getAll()) {
                     %>
                     <option value="<%=genre.getId()%>"><%=lang.equals("en")?genre.getGenreName():genre.getGenreNameUa()%></option>
                     <%
@@ -76,7 +74,7 @@
                 <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
             </div>
             <div class="d-grid gap-2 col-1 mx-2">
-                <button type="submit" class="btn btn-danger my-auto" <%=list.size()==bookDaoImpl.getAll().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+                <button type="submit" class="btn btn-danger my-auto" <%=list.size()== MegaBookDaoImpl.getInstance().getAllSize() ?"disabled":""%>><%=rb.getString("reset")%></button></a>
             </div>
         </form>
     </div>
@@ -122,24 +120,34 @@
         <td><%=list.get(i).getId()%></td>
         <td><img src="book_images/<%=list.get(i).getImgName()%>" height="40px" alt=""></td>
         <td><%=list.get(i).getName()%></td>
-        <td><%=authorDao.get(list.get(i).getAuthorId()).getAuthorName()%></td>
-        <td><%=genreDao.get(list.get(i).getGenreId()).getGenreName()%></td>
+        <td><%=list.get(i).getAuthor().getAuthorName()%></td>
+        <td><%=list.get(i).getGenre().getGenreName()%></td>
         <td><%=list.get(i).getDateOfPublication()%></td>
-        <td><%=publisherDao.get(list.get(i).getPublicationId()).getPublisherName()%></td>
+        <td><%=list.get(i).getPublisher().getPublisherName()%></td>
         <td><button type="button" class="btn btn-outline-primary"><a style="text-decoration: none; color: black" href="change_book.jsp?book_id=<%=list.get(i).getId()%>">Change</a></button></td>
-        <td><button type="button" class="btn btn-outline-danger"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/delete_book?book_id=<%=list.get(i).getId()%>">Delete</a></button></td>
+        <td>
+            <form method="post" action="delete_book">
+                <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+                <input type="submit" class="btn btn-outline-danger" value="Delete">
+            </form>
+        </td>
     </tr>
     <%} else {%>
     <tr>
         <td><%=list.get(i).getId()%></td>
         <td><img src="book_images/<%=list.get(i).getImgName()%>" height="40px" alt=""></td>
         <td><%=list.get(i).getNameUa()%></td>
-        <td><%=authorDao.get(list.get(i).getAuthorId()).getAuthorNameUa()%></td>
-        <td><%=genreDao.get(list.get(i).getGenreId()).getGenreNameUa()%></td>
+        <td><%=list.get(i).getAuthor().getAuthorNameUa()%></td>
+        <td><%=list.get(i).getGenre().getGenreNameUa()%></td>
         <td><%=list.get(i).getDateOfPublication()%></td>
-        <td><%=publisherDao.get(list.get(i).getPublicationId()).getPublisherNameUa()%></td>
+        <td><%=list.get(i).getPublisher().getPublisherNameUa()%></td>
         <td><button type="button" class="btn btn-outline-primary"><a style="text-decoration: none; color: black" href="change_book.jsp?book_id=<%=list.get(i).getId()%>">Змінити</a></button></td>
-        <td><button type="button" class="btn btn-outline-danger"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/delete_book?book_id=<%=list.get(i).getId()%>">Видалити</a></button></td>
+        <td>
+            <form method="post" action="delete_book">
+                <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+                <input type="submit" class="btn btn-outline-danger" value="Видалити">
+            </form>
+        </td>
     </tr>
     <%}
         i++;
@@ -161,7 +169,6 @@
         </a>
     </button>
 </div>
-
 
 <%
     if(!list.isEmpty()){

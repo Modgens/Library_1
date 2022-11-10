@@ -7,6 +7,8 @@
 <%@ page import="dao.implementation.PublisherDaoImpl" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="dao.megaEntity.MegaBookDaoImpl" %>
+<%@ page import="entity.megaEntity.MegaBook" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -19,13 +21,9 @@
   }
   String lang = rb.getString("language");
 
-  BookDaoImpl bookDaoImpl = new BookDaoImpl();
-  AuthorDaoImpl authorDao = new AuthorDaoImpl();
-  GenreDaoImpl genreDao = new GenreDaoImpl();
-  PublisherDaoImpl publisherDao = new PublisherDaoImpl();
-  List<Book> list = (List<Book>) session.getAttribute("catalog_list");
+  List<MegaBook> list = (List<MegaBook>) session.getAttribute("catalog_list");
   if(list == null)
-    list = bookDaoImpl.getAll();
+    list = MegaBookDaoImpl.getInstance().getAll();
 
   if(session.getAttribute("role")==null){
     session.setAttribute("role", "guest");
@@ -56,7 +54,7 @@
         <select name="genre" class="form-select" aria-label="Default select example">
           <option value="" selected><%=rb.getString("genre")%></option>
           <%
-            for (Genre genre : genreDao.getAll()) {
+            for (Genre genre : new GenreDaoImpl().getAll()) {
           %>
           <option value="<%=genre.getId()%>"><%=lang.equals("en")?genre.getGenreName():genre.getGenreNameUa()%></option>
             <%
@@ -83,7 +81,7 @@
         <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
-        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==bookDaoImpl.getAll().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==MegaBookDaoImpl.getInstance().getAllSize()?"disabled":""%>><%=rb.getString("reset")%></button></a>
       </div>
     </form>
   </div>
@@ -121,15 +119,29 @@
       <div class="col-md-8">
         <div class="card-body">
           <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%></a></h4>
-          <h6 class="author">Author: <%=authorDao.get(list.get(i).getAuthorId()).getAuthorName()%></h6>
-          <h6 class="author">Genre: <%=genreDao.get(list.get(i).getGenreId()).getGenreName()%></h6>
-          <h6 class="publication">Publication: <%=publisherDao.get(list.get(i).getPublicationId()).getPublisherName()%></h6>
+          <h6 class="author">Author: <%=list.get(i).getAuthor().getAuthorName()%></h6>
+          <h6 class="author">Genre: <%=list.get(i).getGenre().getGenreName()%></h6>
+          <h6 class="publication">Publication: <%=list.get(i).getPublisher().getPublisherName()%></h6>
           <h6 class="publication-date">Date Of Publication: <%=list.get(i).getDateOfPublication()%> year</h6>
           <%
             if(session.getAttribute("role").equals("user")){
           %>
-          <a href="${pageContext.request.contextPath}/newOrder?user_id=<%=session.getAttribute("user_id")%>&book_id=<%=list.get(i).getId()%>&orderStatus=Wait for order&orderStatusUa=Чекає на оформлення" class="btn btn-outline-success ">Order</a>
-          <a href="${pageContext.request.contextPath}/newOrder?user_id=<%=session.getAttribute("user_id")%>&book_id=<%=list.get(i).getId()%>&orderStatus=Wait for reading room&orderStatusUa=Чекає для читального залу" class="btn btn-outline-success ">Take in reading room</a>
+          <div class="d-flex">
+          <form method="post" action="newOrder">
+            <input type="hidden" name="user_id" value="<%=session.getAttribute("user_id")%>">
+            <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+            <input type="hidden" name="orderStatus" value="Wait for order">
+            <input type="hidden" name="orderStatusUa" value="Чекає на оформлення">
+            <input type="submit" value="Order" class="btn btn-outline-success">
+          </form>
+          <form method="post" action="newOrder" class="ms-1">
+            <input type="hidden" name="user_id" value="<%=session.getAttribute("user_id")%>">
+            <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+            <input type="hidden" name="orderStatus" value="Wait for reading room">
+            <input type="hidden" name="orderStatusUa" value="Чекає для читального залу">
+            <input type="submit" value="Take in reading room" class="btn btn-outline-success">
+          </form>
+          </div>
           <%
             }
           %>
@@ -139,15 +151,29 @@
       <div class="col-md-8">
         <div class="card-body">
           <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getNameUa()%></a></h4>
-          <h6 class="author">Автор: <%=authorDao.get(list.get(i).getAuthorId()).getAuthorNameUa()%></h6>
-          <h6 class="author">Жанр: <%=genreDao.get(list.get(i).getGenreId()).getGenreNameUa()%></h6>
-          <h6 class="publication">Публікатор: <%=publisherDao.get(list.get(i).getPublicationId()).getPublisherNameUa()%></h6>
+          <h6 class="author">Автор: <%=list.get(i).getAuthor().getAuthorNameUa()%></h6>
+          <h6 class="author">Жанр: <%=list.get(i).getGenre().getGenreNameUa()%></h6>
+          <h6 class="publication">Публікатор: <%=list.get(i).getPublisher().getPublisherNameUa()%></h6>
           <h6 class="publication-date">Дата публікації: <%=list.get(i).getDateOfPublication()%> рік</h6>
           <%
             if(session.getAttribute("role").equals("user")){
           %>
-          <a href="${pageContext.request.contextPath}/newOrder?user_id=<%=session.getAttribute("user_id")%>&book_id=<%=list.get(i).getId()%>&orderStatus=Wait for order&orderStatusUa=Чекаю на оформлення" class="btn btn-outline-success ">Замовити</a>
-          <a href="${pageContext.request.contextPath}/newOrder?user_id=<%=session.getAttribute("user_id")%>&book_id=<%=list.get(i).getId()%>&orderStatus=Wait for reading room&orderStatusUa=Чекаю для читального залу" class="btn btn-outline-success ">Взяти в читальний зал</a>
+          <div class="d-flex">
+          <form method="post" action="newOrder">
+            <input type="hidden" name="user_id" value="<%=session.getAttribute("user_id")%>">
+            <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+            <input type="hidden" name="orderStatus" value="Wait for order">
+            <input type="hidden" name="orderStatusUa" value="Чекає на оформлення">
+            <input type="submit" value="Замовити" class="btn btn-outline-success">
+          </form>
+          <form method="post" action="newOrder" class="ms-1">
+            <input type="hidden" name="user_id" value="<%=session.getAttribute("user_id")%>">
+            <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
+            <input type="hidden" name="orderStatus" value="Wait for reading room">
+            <input type="hidden" name="orderStatusUa" value="Чекає для читального залу">
+            <input type="submit" value="Взяти в читальний зал" class="btn btn-outline-success">
+          </form>
+          </div>
           <%
             }
           %>

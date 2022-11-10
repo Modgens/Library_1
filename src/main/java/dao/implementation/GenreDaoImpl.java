@@ -1,7 +1,6 @@
 package dao.implementation;
 
 import dao.GenreDAO;
-import entity.Author;
 import entity.Genre;
 import util.ConnectionPool;
 
@@ -11,9 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class GenreDaoImpl implements GenreDAO {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(GenreDaoImpl.class));
     @Override
     public Genre get(long id) {
         Genre genre = new Genre();
@@ -30,6 +30,7 @@ public class GenreDaoImpl implements GenreDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get genre by id - " + id);
             throw new RuntimeException(e);
         }
         return genre;
@@ -53,6 +54,7 @@ public class GenreDaoImpl implements GenreDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get list of genres");
             throw new RuntimeException(e);
         }
         return list;
@@ -60,7 +62,11 @@ public class GenreDaoImpl implements GenreDAO {
 
     @Override
     public void insert(Genre genre) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (genre == null) {
+            logger.warning("genre is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "INSERT INTO genre (genre_name, genre_name_ua) VALUES(?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, genre.getGenreName());
@@ -68,13 +74,18 @@ public class GenreDaoImpl implements GenreDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert genre with name - " + genre.getGenreName());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void update(Genre genre) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (genre == null) {
+            logger.warning("genre is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "UPDATE genre SET genre_name = ?, genre_name_ua = ?  WHERE id=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, genre.getGenreName());
@@ -83,19 +94,25 @@ public class GenreDaoImpl implements GenreDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update genre with id - " + genre.getId());
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void delete(Genre genre) {
-        try(Connection con = ConnectionPool.getInstance().getConnection()) {
+        if (genre == null) {
+            logger.warning("genre is null");
+            return;
+        }
+        try (Connection con = ConnectionPool.getInstance().getConnection()) {
             String sql = "DELETE FROM genre WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, genre.getId());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete genre with id - " + genre.getId());
             throw new RuntimeException(e);
         }
     }

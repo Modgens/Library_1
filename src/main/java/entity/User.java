@@ -6,6 +6,16 @@ public class User {
     private String email;
     private String status;
 
+    public User(long id, long personalInfoId, String email, String status) {
+        this.id = id;
+        this.personalInfoId = personalInfoId;
+        this.email = email;
+        this.status = status;
+    }
+
+    public User() {
+    }
+
     public long getId() {
         return id;
     }

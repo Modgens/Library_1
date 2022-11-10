@@ -1,14 +1,22 @@
 package controller;
 
-import dao.implementation.*;
-import entity.User;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import dao.megaEntity.MegaUserDaoImpl;
+import entity.megaEntity.MegaUser;
+import service.Searching;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 
 public class UserSearchingServlet extends HttpServlet {
+    static final Logger logger = Logger.getLogger(String.valueOf(UserSearchingServlet.class));
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -16,33 +24,16 @@ public class UserSearchingServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         //get param
         String firstName = request.getParameter("first_name");
+        logger.info("get param first name - " + firstName);
         String lastName = request.getParameter("last_name");
+        logger.info("get param last name - " + lastName);
         String login = request.getParameter("login");
+        logger.info("get param login - " + login);
 
         //get dao
-        PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
-        UserDaoImpl userDao = new UserDaoImpl();
-
-        List<User> list = new ArrayList<>(userDao.getAll());
-        Iterator<User> iterator = list.iterator();
-
-        while (iterator.hasNext()) {
-            User currentUser = iterator.next();
-            if(!firstName.equals("")&&!personalInfoDao.get(currentUser.getPersonId()).getFirstName().equals(firstName)){
-                iterator.remove();
-                continue;
-            }
-            if(!lastName.equals("")&&!personalInfoDao.get(currentUser.getPersonId()).getLastName().equals(lastName)){
-                iterator.remove();
-                continue;
-            }
-            if(!login.equals("")&&!personalInfoDao.get(currentUser.getPersonId()).getLogin().equals(login)){
-                iterator.remove();
-            }
-        }
-
-        request.getSession().setAttribute("user_list", list);
+        List<MegaUser> list = new ArrayList<>(MegaUserDaoImpl.getInstance().getAll());
+        request.getSession().setAttribute("user_list", Searching.getInstance().userSearch(list, firstName, lastName, login));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(request.getParameter("page"));
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 }

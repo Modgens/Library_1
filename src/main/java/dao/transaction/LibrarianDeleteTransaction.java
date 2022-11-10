@@ -5,15 +5,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class LibrarianDeleteTransaction {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(LibrarianDeleteTransaction.class));
     public void deleteById(long librarian_id) {
         Connection con = null;
         try {
+            logger.info("start transaction to delete Librarian");
             con = ConnectionPool.getInstance().getConnection();
             con.setAutoCommit(false);
-
+            logger.info("set autocommit - false");
             long personId=0L;
 
             String sql = "SELECT person_id FROM dblibrary.librarian WHERE id = ?";
@@ -35,14 +37,15 @@ public class LibrarianDeleteTransaction {
             ps.setLong(1, personId);
             ps.executeUpdate();
             ps.close();
-
             con.commit();
+            logger.info("con commit");
         } catch (SQLException e) {
             e.printStackTrace();
             try {
-                System.err.print("Transaction is being rolled back");
                 con.rollback();
+                logger.info("rollback is success");
             } catch (SQLException e2) {
+                logger.warning("rollback is failed");
                 e2.printStackTrace();
             }
         }

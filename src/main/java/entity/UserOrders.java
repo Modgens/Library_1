@@ -4,23 +4,36 @@ import java.sql.Date;
 
 public class UserOrders {
 
-  private long id;
-  private long userId;
-  private long bookId;
-  private Date orderDate;
-  private Date dateToReturn;
-  private String status;
-  private String statusUa;
+    private long id;
+    private long userId;
+    private long bookId;
+    private Date orderDate;
+    private Date dateToReturn;
+    private String status;
+    private String statusUa;
 
-  public long getId() {
-    return id;
-  }
+    public UserOrders(long id, long userId, long bookId, Date orderDate, Date dateToReturn, String status, String statusUa) {
+        this.id = id;
+        this.userId = userId;
+        this.bookId = bookId;
+        this.orderDate = orderDate;
+        this.dateToReturn = dateToReturn;
+        this.status = status;
+        this.statusUa = statusUa;
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public UserOrders() {
+    }
 
-  public long getUserId() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getUserId() {
     return userId;
   }
 

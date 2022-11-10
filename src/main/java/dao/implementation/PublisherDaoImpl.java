@@ -1,7 +1,6 @@
 package dao.implementation;
 
 import dao.PublisherDAO;
-import entity.Author;
 import entity.Publisher;
 import util.ConnectionPool;
 
@@ -11,9 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class PublisherDaoImpl implements PublisherDAO {
+    static final Logger logger = Logger.getLogger(String.valueOf(PublisherDaoImpl.class));
     public long idFromName(String name, String nameUa) {
         long id=0L;
         try(Connection con = ConnectionPool.getInstance().getConnection()) {
@@ -28,6 +29,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get publisher id with name - " + name);
             throw new RuntimeException(e);
         }
         return id;
@@ -48,6 +50,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get publisher with name - " + id);
             throw new RuntimeException(e);
         }
         return publisher;
@@ -71,6 +74,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all publishers");
             throw new RuntimeException(e);
         }
         return list;
@@ -87,6 +91,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert publisher with name - " + publisher.getPublisherName());
             throw new RuntimeException(e);
         }
     }
@@ -102,6 +107,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update publisher with id - " + publisher.getId());
             throw new RuntimeException(e);
         }
     }
@@ -115,6 +121,7 @@ public class PublisherDaoImpl implements PublisherDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete publisher with id - " + publisher.getId());
             throw new RuntimeException(e);
         }
     }

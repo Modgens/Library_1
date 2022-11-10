@@ -3,19 +3,28 @@ package entity;
 
 public class Genre {
 
-  private long id;
-  private String genreName;
-  private String genreNameUa;
+    private long id;
+    private String genreName;
+    private String genreNameUa;
 
-  public long getId() {
-    return id;
-  }
+    public Genre() {
+    }
 
-  public void setId(long id) {
-    this.id = id;
-  }
+    public Genre(long id, String genreName, String genreNameUa) {
+        this.id = id;
+        this.genreName = genreName;
+        this.genreNameUa = genreNameUa;
+    }
 
-  public String getGenreName() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getGenreName() {
     return genreName;
   }
 

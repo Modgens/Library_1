@@ -7,6 +7,19 @@ public class PersonalInfo {
     private String firstName;
     private String lastName;
 
+    public PersonalInfo() {
+
+    }
+
+    public PersonalInfo(long id, String login, String password, String firstName, String lastName) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+
     public long getId() {
         return id;
     }

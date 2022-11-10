@@ -10,8 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PersonalInfoDaoImpl implements PersonalInfoDAO {
+    static final Logger logger = Logger.getLogger(String.valueOf(GenreDaoImpl.class));
 
     private void setAllInEntity(PersonalInfo personalInfo, ResultSet rs) throws SQLException {
         personalInfo.setId(rs.getLong("id"));
@@ -35,6 +37,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
                 list.add(personalInfo);
             }
         } catch (SQLException e) {
+            logger.warning("failed to get all personal info");
             throw new RuntimeException(e);
         }
         return list;
@@ -54,6 +57,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with id - " + id);
             throw new RuntimeException(e);
         }
         return personalInfo;
@@ -72,6 +76,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with name - " + personalInfo.getFirstName() + " " + personalInfo.getLastName());
             throw new RuntimeException(e);
         }
     }
@@ -88,6 +93,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             ps.setLong(5, personalInfo.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with name - " + personalInfo.getFirstName() + " " + personalInfo.getLastName());
             throw new RuntimeException(e);
         }
     }
@@ -101,6 +107,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with name - " + personalInfo.getFirstName() + " " + personalInfo.getLastName());
             throw new RuntimeException(e);
         }
     }
@@ -120,6 +127,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with login - " + login + " and password - " + password);
             throw new RuntimeException(e);
         }
         return personalInfo;
@@ -139,6 +147,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info with login - " + login);
             throw new RuntimeException(e);
         }
         return personalInfo;
@@ -158,6 +167,7 @@ public class PersonalInfoDaoImpl implements PersonalInfoDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get personal info id with login - " + login);
             throw new RuntimeException(e);
         }
         return id;

@@ -1,7 +1,6 @@
 package dao.implementation;
 
 import dao.SubscriptionsDAO;
-import entity.Author;
 import entity.Subscriptions;
 import util.ConnectionPool;
 
@@ -11,8 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SubscriptionsDaoImpl implements SubscriptionsDAO {
+    static final Logger logger = Logger.getLogger(String.valueOf(SubscriptionsDaoImpl.class));
     @Override
     public Subscriptions get(long id) {
         Subscriptions subscriptions = new Subscriptions();
@@ -30,6 +31,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get subscription with id - " + id);
             throw new RuntimeException(e);
         }
         return subscriptions;
@@ -54,6 +56,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all subscriptions ");
             throw new RuntimeException(e);
         }
         return list;
@@ -71,6 +74,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert subscription with user id - " + subscriptions.getUserId());
             throw new RuntimeException(e);
         }
     }
@@ -87,6 +91,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update subscription with id - " + subscriptions.getId());
             throw new RuntimeException(e);
         }
     }
@@ -100,6 +105,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete subscription with id - " + subscriptions.getId());
             throw new RuntimeException(e);
         }
     }
@@ -121,6 +127,7 @@ public class SubscriptionsDaoImpl implements SubscriptionsDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get subscription with user id - " + user_id);
             throw new RuntimeException(e);
         }
         return subscriptions;

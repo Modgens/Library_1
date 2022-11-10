@@ -58,7 +58,7 @@
     <%
       for (Genre genre : genreDao.getAll()) {
     %>
-    <option value="<%=genre.getId()%>"><%=genre.getGenreName()%></option>
+    <option value="<%=genre.getId()%>"><%=lang.equals("en")?genre.getGenreName():genre.getGenreNameUa()%></option>
     <%
       }
     %>

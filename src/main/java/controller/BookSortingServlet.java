@@ -1,71 +1,49 @@
 package controller;
 
-import dao.implementation.AuthorDaoImpl;
-import dao.implementation.BookDaoImpl;
-import dao.implementation.GenreDaoImpl;
-import dao.implementation.PublisherDaoImpl;
-import entity.Book;
+import dao.megaEntity.MegaBookDaoImpl;
+import entity.megaEntity.MegaBook;
+import service.BookSorting;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 
 public class BookSortingServlet extends HttpServlet {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(BookSortingServlet.class));
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         //get param
         String genre = request.getParameter("genre");
+        logger.info("get param genre with value - " + genre);
+
         String sortBy = request.getParameter("sort");
+        logger.info("get param sort with value - " + sortBy);
+
         String bookName = request.getParameter("book");
+        logger.info("get param book with value - " + bookName);
+
         String authorName = request.getParameter("author");
+        logger.info("get param author with value - " + authorName);
+
         String page = request.getParameter("page");
+        logger.info("get param page with value - " + page);
 
-        //get dao
-        BookDaoImpl bookDao = new BookDaoImpl();
-        AuthorDaoImpl authorDao = new AuthorDaoImpl();
-        PublisherDaoImpl publisherDao = new PublisherDaoImpl();
+        List<MegaBook> list = new ArrayList<>(MegaBookDaoImpl.getInstance().getAll());
+        logger.info("get list of all book in db");
 
-        List<Book> list = new ArrayList<>(bookDao.getAll());
-        Iterator<Book> iterator = list.iterator();
+        request.getSession().setAttribute(page.equals("/catalog.jsp") ? "catalog_list" : "books_list", BookSorting.getInstance().sort(genre, sortBy, bookName, authorName, list));
+        logger.info("set Attribute in session with book entity in value");
 
-
-        while (iterator.hasNext()) {
-            Book currentBook = iterator.next();
-            if((!genre.equals("")) &&currentBook.getGenreId()!=Long.parseLong(genre)){
-                iterator.remove();
-                continue;
-            }
-            if(!bookName.equals("")&&(!currentBook.getName().equalsIgnoreCase(bookName)&&!currentBook.getNameUa().equalsIgnoreCase(bookName))){
-                iterator.remove();
-                continue;
-            }
-            if(!authorName.equals("")&&(!authorDao.get(currentBook.getAuthorId()).getAuthorName().equalsIgnoreCase(authorName)&&!authorDao.get(currentBook.getAuthorId()).getAuthorNameUa().equalsIgnoreCase(authorName))){
-                iterator.remove();
-            }
-        }
-        switch (sortBy){
-            case "":
-                break;
-            case "name":
-                list.sort(Comparator.comparing(Book::getName));
-                break;
-            case "author":
-                list.sort(Comparator.comparing(a -> authorDao.get(a.getAuthorId()).getAuthorName()));
-                break;
-            case "publisher":
-                list.sort(Comparator.comparing(p -> publisherDao.get(p.getPublicationId()).getPublisherName()));
-                break;
-            case "date":
-                list.sort(Comparator.comparing(Book::getDateOfPublication));
-                break;
-        }
-        request.getSession().setAttribute(page.equals("/catalog.jsp") ? "catalog_list" : "books_list", list);
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        dispatcher.forward(request,response);
+        dispatcher.forward(request, response);
     }
 }

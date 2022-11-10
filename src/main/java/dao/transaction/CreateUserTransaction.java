@@ -6,13 +6,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class CreateUserTransaction {
+    static final Logger logger = Logger.getLogger(String.valueOf(CreateUserTransaction.class));
     public void create(PersonalInfo personalInfo, String email, String status){
         Connection con = null;
         try {
+            logger.info("start transaction to create User");
             con = ConnectionPool.getInstance().getConnection();
             con.setAutoCommit(false);
+            logger.info("set autocommit - false");
 
             String sql = "INSERT INTO personal_info (first_name, last_name, login, password) VALUES(?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -40,12 +44,14 @@ public class CreateUserTransaction {
             ps.executeUpdate();
             ps.close();
             con.commit();
+            logger.info("con commit");
         } catch (SQLException e) {
             e.printStackTrace();
             try {
-                System.err.print("Transaction is being rolled back");
                 con.rollback();
+                logger.info("rollback is success");
             } catch (SQLException e2) {
+                logger.warning("rollback is failed");
                 e2.printStackTrace();
             }
         }

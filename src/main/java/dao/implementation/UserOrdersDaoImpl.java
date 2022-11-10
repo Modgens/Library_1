@@ -10,9 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UserOrdersDaoImpl implements UserOrdersDAO {
-
+    static final Logger logger = Logger.getLogger(String.valueOf(UserOrdersDaoImpl.class));
     @Override
     public UserOrders get(long id) {
         UserOrders userOrders = new UserOrders();
@@ -33,6 +34,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get user order with id - " + id);
             throw new RuntimeException(e);
         }
         return userOrders;
@@ -59,6 +61,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all users order with id");
             throw new RuntimeException(e);
         }
         return list;
@@ -79,6 +82,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to insert user order with user id - " + userOrders.getUserId());
             throw new RuntimeException(e);
         }
     }
@@ -98,6 +102,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to update user order with id - " + userOrders.getId());
             throw new RuntimeException(e);
         }
     }
@@ -111,6 +116,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to delete user order with id - " + userOrders.getId());
             throw new RuntimeException(e);
         }
     }
@@ -128,6 +134,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             ps.close();
             rs.close();
         } catch (SQLException e) {
+            logger.warning("failed to get count of user orders with book id - " + book_id);
             throw new RuntimeException(e);
         }
         return count;
@@ -147,6 +154,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to find user order with book id - " + book_id + " and user id - " + user_id);
             throw new RuntimeException(e);
         }
         return false;
@@ -164,6 +172,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             ps.close();
             rs.close();
         } catch (SQLException e) {
+            logger.warning("failed to get count of user orders with user id - " + user_id);
             throw new RuntimeException(e);
         }
         return count;
@@ -188,6 +197,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all user orders with user id - " + user_id);
             throw new RuntimeException(e);
         }
         return list;
@@ -214,6 +224,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all user orders for reading room page");
             throw new RuntimeException(e);
         }
         return list;
@@ -240,6 +251,7 @@ public class UserOrdersDaoImpl implements UserOrdersDAO {
             }
             ps.close();
         } catch (SQLException e) {
+            logger.warning("failed to get all user orders for subscription page");
             throw new RuntimeException(e);
         }
         return list;

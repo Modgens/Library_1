@@ -3,7 +3,8 @@
 <%@ page import="dao.implementation.GenreDaoImpl" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="dao.implementation.PublisherDaoImpl" %><%--
+<%@ page import="dao.implementation.PublisherDaoImpl" %>
+<%@ page import="entity.megaEntity.MegaBook" %><%--
   Created by IntelliJ IDEA.
   User: Modgen
   Date: 20.09.2022
@@ -20,10 +21,8 @@
         rb = (ResourceBundle) session.getAttribute("rb");
     }
     String lang = rb.getString("language");
-    Book book = (Book)request.getAttribute("book");
-    AuthorDaoImpl authorDao = new AuthorDaoImpl();
-    GenreDaoImpl genreDao = new GenreDaoImpl();
-    PublisherDaoImpl publisherDao = new PublisherDaoImpl();
+    MegaBook book = (MegaBook)request.getAttribute("book");
+
 %>
 <html>
 <head>
@@ -44,9 +43,9 @@
             <br>
             <div class=""></div>
             <h4>Дата видання: <%=book.getDateOfPublication()%> рік</h4>
-            <h4>Публікатор: <%=publisherDao.get(book.getPublicationId()).getPublisherNameUa()%></h4>
-            <h4>Автор: <%=authorDao.get(book.getAuthorId()).getAuthorNameUa()%></h4>
-            <h4>Жанр: <%=genreDao.get(book.getGenreId()).getGenreNameUa()%></h4>
+            <h4>Публікатор: <%=book.getPublisher().getPublisherNameUa()%></h4>
+            <h4>Автор: <%=book.getAuthor().getAuthorNameUa()%></h4>
+            <h4>Жанр: <%=book.getGenre().getGenreNameUa()%></h4>
                         <br><br><br><br><br><br><br><br>
             <%
                 if(session.getAttribute("role").equals("user")){
@@ -63,9 +62,9 @@
             <br>
             <div class=""></div>
             <h4>Date of publication: <%=book.getDateOfPublication()%> year</h4>
-            <h4>Publisher: <%=publisherDao.get(book.getPublicationId()).getPublisherName()%></h4>
-            <h4>Author: <%=authorDao.get(book.getAuthorId()).getAuthorName()%></h4>
-            <h4>Genre: <%=genreDao.get(book.getGenreId()).getGenreName()%></h4>
+            <h4>Publisher: <%=book.getPublisher().getPublisherName()%></h4>
+            <h4>Author: <%=book.getAuthor().getAuthorName()%></h4>
+            <h4>Genre: <%=book.getGenre().getGenreName()%></h4>
             <br><br><br><br><br><br><br><br>
             <%
                 if(session.getAttribute("role").equals("user")){

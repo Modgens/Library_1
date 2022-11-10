@@ -3,7 +3,7 @@
 <%@ page import="entity.*" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="util.Punisher" %>
+<%@ page import="dao.Punisher" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%

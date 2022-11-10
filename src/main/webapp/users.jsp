@@ -1,9 +1,9 @@
 <%@ page import="java.util.List" %>
-<%@ page import="dao.implementation.*" %>
-<%@ page import="entity.User" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="util.Punisher" %>
+<%@ page import="dao.Punisher" %>
+<%@ page import="entity.megaEntity.MegaUser" %>
+<%@ page import="dao.megaEntity.MegaUserDaoImpl" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
@@ -16,11 +16,9 @@
   }
   String lang = rb.getString("language");
 
-  UserDaoImpl userDao = new UserDaoImpl();
-  PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
-  List<User> list = (List<User>) session.getAttribute("user_list");
+  List<MegaUser> list = (List<MegaUser>) session.getAttribute("user_list");
   if(list == null)
-    list = userDao.getAll();
+    list = MegaUserDaoImpl.getInstance().getAll();
 %>
 
 <!doctype html>
@@ -52,7 +50,7 @@
         <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
-        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==userDao.getAll().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==MegaUserDaoImpl.getInstance().getAll().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
       </div>
     </form>
   </div>
@@ -95,13 +93,21 @@
   %>
   <tr>
     <td><%=list.get(i).getId()%></td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getFirstName()%></td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLastName()%></td>
+    <td><%=list.get(i).getPersonalInfo().getFirstName()%></td>
+    <td><%=list.get(i).getPersonalInfo().getLastName()%></td>
     <td><%=list.get(i).getEmail()%></td>
     <td><%=punisher.usersFineSum(list.get(i).getId())%> ₴</td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLogin()%></td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getPassword()%></td>
-    <td><button type="button" class="btn btn-outline-<%=list.get(i).getStatus().equals("baned")?"success":"danger"%>"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/user_ban?user_id=<%=list.get(i).getId()%>"><%=list.get(i).getStatus().equals("baned")?rb.getString("unban"):rb.getString("ban")%></a></button></td>
+    <td><%=list.get(i).getPersonalInfo().getLogin()%></td>
+    <td><%=list.get(i).getPersonalInfo().getPassword()%></td>
+    <td>
+      <form method="post" action="user_ban">
+        <input type="hidden" name="user_id" value="<%=list.get(i).getId()%>">
+        <input type="submit"
+               class="btn btn-outline-<%=list.get(i).getStatus().equals("baned")?"success":"danger"%>"
+               value="<%=list.get(i).getStatus().equals("baned")?rb.getString("unban"):rb.getString("ban")%>"
+        >
+      </form>
+    </td>
   </tr>
   <%
       i++;
