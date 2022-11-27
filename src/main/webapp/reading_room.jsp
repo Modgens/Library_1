@@ -51,19 +51,19 @@
 
             <input type="hidden" name="page" value="/reading_room.jsp">
             <div class="d-grid gap-2 col-3 mx-2">
-                <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>">
+                <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>" value="<%=session.getAttribute("selectedFirstNameReadRoom")!=null?session.getAttribute("selectedFirstNameReadRoom"):""%>">
             </div>
             <div class="d-grid gap-2 col-3 mx-2">
-                <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>">
+                <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>" value="<%=session.getAttribute("selectedLastNameReadRoom")!=null?session.getAttribute("selectedLastNameReadRoom"):""%>">
             </div>
             <div class="d-grid gap-2 col-3 mx-2">
-                <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>">
+                <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>" value="<%=session.getAttribute("selectedLoginReadRoom")!=null?session.getAttribute("selectedLoginReadRoom"):""%>">
             </div>
             <div class="d-grid gap-2 col-1 mx-2">
                 <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
             </div>
             <div class="d-grid gap-2 col-1 mx-2">
-                <button type="submit" class="btn btn-danger my-auto" <%=list.size()==userOrdersDao.getAllForSub().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+                <button type="button" class="btn btn-danger my-auto" ><a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/reset?reset_page=reading_room"><%=rb.getString("reset")%></a></button>
             </div>
         </form>
     </div>

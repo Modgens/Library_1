@@ -45,11 +45,11 @@
 
             <div class="d-grid gap-2 col-2 mx-3">
                 <select name="genre" class="form-select" aria-label="Default select example">
-                    <option value="" selected><%=rb.getString("genre")%></option>
+                    <option value= "" <%=session.getAttribute("selectedGenre")==null?"selected":""%>><%=rb.getString("genre")%></option>
                     <%
                         for (Genre genre : new GenreDaoImpl().getAll()) {
                     %>
-                    <option value="<%=genre.getId()%>"><%=lang.equals("en")?genre.getGenreName():genre.getGenreNameUa()%></option>
+                    <option value="<%=genre.getId()%>" <%=session.getAttribute("selectedGenre")!=null&&genre.getId()==(long)session.getAttribute("selectedGenre")?"selected":""%>><%=lang.equals("en")?genre.getGenreName():genre.getGenreNameUa()%></option>
                     <%
                         }
                     %>
@@ -57,26 +57,27 @@
             </div>
             <div class="d-grid gap-2 col-2 mx-2">
                 <select name="sort" class="form-select" aria-label="Default select example">
-                    <option value="" selected><%=rb.getString("sortedBy")%></option>
-                    <option value="name"><%=rb.getString("name")%></option>
-                    <option value="author"><%=rb.getString("author")%></option>
-                    <option value="publisher"><%=rb.getString("publisher")%></option>
-                    <option value="date"><%=rb.getString("dateOfPublication")%></option>
+                    <option value="" <%=session.getAttribute("selectedSorting")==null?"selected":""%>><%=rb.getString("sortedBy")%></option>
+                    <option value="name" <%=session.getAttribute("selectedSorting")!=null&&session.getAttribute("selectedSorting").equals("name")?"selected":""%>><%=rb.getString("name")%></option>
+                    <option value="author" <%=session.getAttribute("selectedSorting")!=null&&session.getAttribute("selectedSorting").equals("author")?"selected":""%>><%=rb.getString("author")%></option>
+                    <option value="publisher" <%=session.getAttribute("selectedSorting")!=null&&session.getAttribute("selectedSorting").equals("publisher")?"selected":""%>><%=rb.getString("publisher")%></option>
+                    <option value="date" <%=session.getAttribute("selectedSorting")!=null&&session.getAttribute("selectedSorting").equals("date")?"selected":""%>><%=rb.getString("dateOfPublication")%></option>
                 </select>
             </div>
             <div class="d-grid gap-2 col-2 mx-2">
-                <input name="book" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("bName")%>">
+                <input name="book" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("bName")%>" value="<%=session.getAttribute("selectedBook")!=null?session.getAttribute("selectedBook"):""%>">
             </div>
             <div class="d-grid gap-2 col-2 mx-2">
-                <input name="author" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("aName")%>">
+                <input name="author" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("aName")%>" value="<%=session.getAttribute("selectedAuthor")!=null?session.getAttribute("selectedAuthor"):""%>">
             </div>
-            <div class="d-grid gap-2 col-2 mx-2">
+            <div class="d-grid gap-2 col-1 mx-2">
                 <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
             </div>
             <div class="d-grid gap-2 col-1 mx-2">
-                <button type="submit" class="btn btn-danger my-auto" <%=list.size()== MegaBookDaoImpl.getInstance().getAllSize() ?"disabled":""%>><%=rb.getString("reset")%></button></a>
+                <button type="button" class="btn btn-danger my-auto" ><a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/reset?reset_page=books"><%=rb.getString("reset")%></a></button>
             </div>
         </form>
+
     </div>
 </div>
 <nav class="navbar navbar-light bg-light">
@@ -124,7 +125,7 @@
         <td><%=list.get(i).getGenre().getGenreName()%></td>
         <td><%=list.get(i).getDateOfPublication()%></td>
         <td><%=list.get(i).getPublisher().getPublisherName()%></td>
-        <td><button type="button" class="btn btn-outline-primary"><a style="text-decoration: none; color: black" href="change_book.jsp?book_id=<%=list.get(i).getId()%>">Change</a></button></td>
+        <td><a href="change_book.jsp?book_id=<%=list.get(i).getId()%>"><button type="button" class="btn btn-outline-primary">Змінити</button></a></td>
         <td>
             <form method="post" action="delete_book">
                 <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">
@@ -141,7 +142,7 @@
         <td><%=list.get(i).getGenre().getGenreNameUa()%></td>
         <td><%=list.get(i).getDateOfPublication()%></td>
         <td><%=list.get(i).getPublisher().getPublisherNameUa()%></td>
-        <td><button type="button" class="btn btn-outline-primary"><a style="text-decoration: none; color: black" href="change_book.jsp?book_id=<%=list.get(i).getId()%>">Змінити</a></button></td>
+        <td><a href="change_book.jsp?book_id=<%=list.get(i).getId()%>"><button type="button" class="btn btn-outline-primary">Змінити</button></a></td>
         <td>
             <form method="post" action="delete_book">
                 <input type="hidden" name="book_id" value="<%=list.get(i).getId()%>">

@@ -51,19 +51,19 @@
 
       <input type="hidden" name="page" value="/user_orders.jsp">
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>">
+        <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>" value="<%=session.getAttribute("selectedFirstNameOrder")!=null?session.getAttribute("selectedFirstNameOrder"):""%>">
       </div>
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>">
+        <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>" value="<%=session.getAttribute("selectedLastNameOrder")!=null?session.getAttribute("selectedLastNameOrder"):""%>">
       </div>
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>">
+        <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>" value="<%=session.getAttribute("selectedLoginOrder")!=null?session.getAttribute("selectedLoginOrder"):""%>">
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
         <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
-        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==userOrdersDao.getAllForSub().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+        <button type="button" class="btn btn-danger my-auto" ><a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/reset?reset_page=user_orders"><%=rb.getString("reset")%></a></button>
       </div>
     </form>
   </div>

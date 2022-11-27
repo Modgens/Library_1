@@ -8,9 +8,11 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class NewPersonFilter implements Filter {
     private FilterConfig config;
+    static final Logger logger = Logger.getLogger(String.valueOf(NewPersonFilter.class));
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
@@ -29,6 +31,13 @@ public class NewPersonFilter implements Filter {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
 
+        //logger
+        logger.info("get param fName with value : " + fName);
+        logger.info("get param lName with value : " + lName);
+        logger.info("get param login with value : " + login);
+        logger.info("get param password with value : " + password);
+        logger.info("get param email with value : " + email);
+
         //Entity
         PersonalInfo personalInfoEntity = new PersonalInfo();
 
@@ -36,6 +45,7 @@ public class NewPersonFilter implements Filter {
         PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
 
         String error = Validator.getInstance().newPersonValidate(personalInfoDao, personalInfoEntity, fName, lName, login, password);
+        logger.info("result of methode Validator.newPersonValidate(...) : " + error);
 
         request.setAttribute("error", error);
         if (error.equals("")) {

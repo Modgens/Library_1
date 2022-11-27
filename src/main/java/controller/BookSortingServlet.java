@@ -24,15 +24,23 @@ public class BookSortingServlet extends HttpServlet {
         //get param
         String genre = request.getParameter("genre");
         logger.info("get param genre with value - " + genre);
+        if(!genre.equals(""))
+            request.getSession().setAttribute("selectedGenre", Long.parseLong(genre));
 
         String sortBy = request.getParameter("sort");
         logger.info("get param sort with value - " + sortBy);
+        if(sortBy!=null)
+            request.getSession().setAttribute("selectedSorting", sortBy);
 
         String bookName = request.getParameter("book");
         logger.info("get param book with value - " + bookName);
+        if(bookName!=null)
+            request.getSession().setAttribute("selectedBook", bookName);
 
         String authorName = request.getParameter("author");
         logger.info("get param author with value - " + authorName);
+        if(authorName!=null)
+            request.getSession().setAttribute("selectedAuthor", authorName);
 
         String page = request.getParameter("page");
         logger.info("get param page with value - " + page);

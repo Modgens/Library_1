@@ -17,6 +17,8 @@
     } else {
         rb = (ResourceBundle) session.getAttribute("rb");
     }
+    session.setAttribute("role", "guest");
+    session.setAttribute("name", "Guest");
 
 %>
 

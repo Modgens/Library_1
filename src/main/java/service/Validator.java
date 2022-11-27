@@ -14,9 +14,11 @@ import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 public class Validator {
     private static Validator instance;
+    static final Logger logger = Logger.getLogger(String.valueOf(Validator.class));
 
     public static Validator getInstance() {
         if (instance == null)
@@ -237,7 +239,7 @@ public class Validator {
             throw new NullPointerException();
         //regex
         final String NAME_REGEX = "[а-яА-Яa-zA-Z]+";
-        final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
+        final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";//Пароль мусить мати як мінімум 1 цифру, 1 букву(Велику та Малу), 1 спец.символ(@#$%) і мати довжину від 8 до 20 символів
 
         //f_name validation
         if (fName.matches(NAME_REGEX)) {

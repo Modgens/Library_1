@@ -16,6 +16,9 @@
         <location>/errors/500/index.html</location>
     </error-page>
 
+    <listener>
+        <listener-class>listeners.MySessionListener</listener-class>
+    </listener>
 
     <filter>
         <filter-name>NewOrderFilter</filter-name>
@@ -126,7 +129,15 @@
         <servlet-name>LanguageServlet</servlet-name>
         <servlet-class>controller.LanguageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ResetButton</servlet-name>
+        <servlet-class>controller.ResetButton</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>ResetButton</servlet-name>
+        <url-pattern>/reset</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LanguageServlet</servlet-name>
         <url-pattern>/lang</url-pattern>

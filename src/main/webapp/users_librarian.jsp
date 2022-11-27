@@ -5,6 +5,8 @@
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="dao.Punisher" %>
+<%@ page import="entity.megaEntity.MegaUser" %>
+<%@ page import="dao.megaEntity.MegaUserDaoImpl" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
@@ -17,11 +19,11 @@
   }
   String lang = rb.getString("language");
 
-  UserDaoImpl userDao = new UserDaoImpl();
+  MegaUserDaoImpl userDao = MegaUserDaoImpl.getInstance();
   PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();
   SubscriptionsDaoImpl subscriptionsDao = new SubscriptionsDaoImpl();
   UserOrdersDaoImpl userOrdersDao = new UserOrdersDaoImpl();
-  List<User> list =  (List<User>) session.getAttribute("list");
+  List<MegaUser> list =  (List<MegaUser>) session.getAttribute("user_list");
   if(list == null)
     list = userDao.getAll();
 %>
@@ -44,19 +46,19 @@
 
       <input type="hidden" name="page" value="/users_librarian.jsp">
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>">
+        <input name="first_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("fName")%>" value="<%=session.getAttribute("selectedFirstName")!=null?session.getAttribute("selectedFirstName"):""%>">
       </div>
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>">
+        <input name="last_name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("lName")%>" value="<%=session.getAttribute("selectedLastName")!=null?session.getAttribute("selectedLastName"):""%>">
       </div>
       <div class="d-grid gap-2 col-3 mx-2">
-        <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>">
+        <input name="login" type="text" class="form-control" aria-describedby="emailHelp" placeholder="<%=rb.getString("login")%>" value="<%=session.getAttribute("selectedLogin")!=null?session.getAttribute("selectedLogin"):""%>">
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
         <button type="submit" class="btn btn-primary my-auto"><%=rb.getString("find")%></button>
       </div>
       <div class="d-grid gap-2 col-1 mx-2">
-        <button type="submit" class="btn btn-danger my-auto" <%=list.size()==userOrdersDao.getAllForSub().size()?"disabled":""%>><%=rb.getString("reset")%></button></a>
+        <button type="button" class="btn btn-danger my-auto" ><a style="text-decoration: none; color: white" href="${pageContext.request.contextPath}/reset?reset_page=users"><%=rb.getString("reset")%></a></button>
       </div>
     </form>
   </div>
@@ -101,21 +103,19 @@
     while (i <= end && !list.isEmpty()) {
       int count = userOrdersDao.countOrderedOneUser(list.get(i).getId());
       subscriptions = subscriptionsDao.getFromUserDao(list.get(i).getId());
-      if(subscriptions!=null){
   %>
   <tr>
     <td><%=list.get(i).getId()%></td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getFirstName()%></td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLastName()%></td>
+    <td><%=list.get(i).getPersonalInfo().getFirstName()%></td>
+    <td><%=list.get(i).getPersonalInfo().getLastName()%></td>
     <td><%=list.get(i).getEmail()%></td>
     <td><%=punisher.usersFineSum(list.get(i).getId())%> ₴</td>
-    <td><%=personalInfoDao.get(list.get(i).getPersonId()).getLogin()%></td>
-    <td><%=subscriptions.getStartDate()%></td>
-    <td><%=subscriptions.getEndDate()%></td>
+    <td><%=list.get(i).getPersonalInfo().getLogin()%></td>
+    <td><%=subscriptions!=null?subscriptions.getStartDate():rb.getString("haven'tSub")%></td>
+    <td><%=subscriptions!=null?subscriptions.getEndDate():rb.getString("haven'tSub")%></td>
     <td><%=count%></td>
   </tr>
   <%
-    }
       i++;
     }
     int current_page = 1;
@@ -126,8 +126,13 @@
   </tbody>
 </table>
 
+<%
+  if(!list.isEmpty()){
+%>
 <p:pagination count='<%=String.valueOf((list.size()%15==0)?list.size()/15:list.size()/15+1)%>' current_page='<%=String.valueOf(current_page)%>' link="users_librarian.jsp" list_size='<%=String.valueOf(list.size())%>'/>
-
+<% } else {%>
+<p2 style="font-size: 45px; font-weight: bold; text-align: center"><%=rb.getString("eList")%></p2>
+<%}%>
 
 <%@include file="includes/footer.jsp"%>
 </body>

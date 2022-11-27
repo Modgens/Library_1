@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class OrderSearchingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        HttpSession session = request.getSession();
         request.setCharacterEncoding("UTF-8");
         //get param
         String firstName = request.getParameter("first_name");
@@ -32,6 +34,22 @@ public class OrderSearchingServlet extends HttpServlet {
         logger.info("get param login - " + login);
         String page = request.getParameter("page");
         logger.info("get param page - " + page);
+        if(page!=null&&page.equals("/user_orders.jsp")){
+            if(firstName!=null)
+                session.setAttribute("selectedFirstNameOrder", firstName);
+            if(lastName!=null)
+                session.setAttribute("selectedLastNameOrder", lastName);
+            if(login!=null)
+                session.setAttribute("selectedLoginOrder", login);
+        }
+        if(page!=null&&page.equals("/reading_room.jsp")){
+            if(firstName!=null)
+                session.setAttribute("selectedFirstNameReadRoom", firstName);
+            if(lastName!=null)
+                session.setAttribute("selectedLastNameReadRoom", lastName);
+            if(login!=null)
+                session.setAttribute("selectedLoginReadRoom", login);
+        }
 
         //get dao
         PersonalInfoDaoImpl personalInfoDao = new PersonalInfoDaoImpl();

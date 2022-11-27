@@ -9,10 +9,12 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class NewOrderFilter implements Filter {
 
     private FilterConfig config;
+    static final Logger logger = Logger.getLogger(String.valueOf(NewOrderFilter.class));
 
     public void init(FilterConfig config) throws ServletException {
         this.config=config;
@@ -30,6 +32,10 @@ public class NewOrderFilter implements Filter {
         long bookId = Long.parseLong(request.getParameter("book_id"));
         String status = request.getParameter("orderStatus");
         String ordersStatusUa = request.getParameter("orderStatusUa");
+        logger.info("get param userId with value: " + userId);
+        logger.info("get param bookId with value: " + bookId);
+        logger.info("get param status with value: " + status);
+        logger.info("get param ordersStatusUa with value: " + ordersStatusUa);
 
 
         //dao
@@ -38,6 +44,7 @@ public class NewOrderFilter implements Filter {
         SubscriptionsDaoImpl subscriptionsDao = new SubscriptionsDaoImpl();
 
         String error = Validator.getInstance().newOrderValidation(userId, bookId, status, ordersStatusUa, userOrdersDao, bookDao, subscriptionsDao);
+        logger.info("result of methode Validator.newOrderValidation(...) : " + error);
         if (error != null)
             request.setAttribute("error", error);
         chain.doFilter(request, response);

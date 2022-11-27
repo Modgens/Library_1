@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,22 @@ public class UserSearchingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
         //get param
         String firstName = request.getParameter("first_name");
         logger.info("get param first name - " + firstName);
+        if(firstName!=null)
+            session.setAttribute("selectedFirstName", firstName);
+
         String lastName = request.getParameter("last_name");
         logger.info("get param last name - " + lastName);
+        if(lastName!=null)
+            session.setAttribute("selectedLastName", lastName);
+
         String login = request.getParameter("login");
         logger.info("get param login - " + login);
+        if(login!=null)
+            session.setAttribute("selectedLogin", login);
 
         //get dao
         List<MegaUser> list = new ArrayList<>(MegaUserDaoImpl.getInstance().getAll());
