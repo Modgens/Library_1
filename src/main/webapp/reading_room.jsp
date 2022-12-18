@@ -5,8 +5,7 @@
 <%@ page import="java.util.Locale" %>
 <%@ taglib uri="/WEB-INF/navbar-tag.tld" prefix="nav" %>
 <%@ taglib prefix="p" tagdir="/WEB-INF/tags" %>
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"
-         language="java"%>
+<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%
     ResourceBundle rb = null;
     if(session.getAttribute("rb")==null){
@@ -25,7 +24,6 @@
     request.setAttribute("personalInfoDao",  new PersonalInfoDaoImpl());
 
     List<UserOrders> list =  (List<UserOrders>) session.getAttribute("read_room_order_list");
-    System.out.println(list);
     if(list == null)
         list = userOrdersDao.getAllForReadingRoom();
     request.setAttribute("list", list);

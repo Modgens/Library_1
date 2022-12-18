@@ -4,7 +4,8 @@
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="dao.implementation.PublisherDaoImpl" %>
-<%@ page import="entity.megaEntity.MegaBook" %><%--
+<%@ page import="entity.megaEntity.MegaBook" %>
+<%--
   Created by IntelliJ IDEA.
   User: Modgen
   Date: 20.09.2022

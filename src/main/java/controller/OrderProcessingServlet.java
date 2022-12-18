@@ -43,7 +43,7 @@ public class OrderProcessingServlet extends HttpServlet {
         } else {
             list.remove(listOrder);
             userOrdersDao.delete(userOrders);
-            logger.info("delete userOrder in bd with id - " + userOrders.getId());
+            logger.info("delete userOrder in db with id - " + userOrders.getId());
         }
         request.getSession().setAttribute("read_room_order_list", list);
         logger.info("set list of orders in session with count - " + list.size());
