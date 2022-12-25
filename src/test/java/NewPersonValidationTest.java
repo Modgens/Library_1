@@ -34,14 +34,14 @@ public class NewPersonValidationTest {
     }
     @Test
     public void NewPersonEmptyTest(){
-        Assert.assertEquals("Incorrect first name | Невірне ім'я", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "", "", "", ""));
+        Assert.assertEquals("Incorrect first name</br>Невірне ім'я", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "", "", "", ""));
     }
     @Test
     public void NewPersonF_L_NameOrLoginTest(){
         Assert.assertEquals("", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "Shevchenko", "user1", "ZXC123zxc@"));
-        Assert.assertEquals("This login is already in used | Цей логін вже зареєстрований", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "Shevchenko", "zero", "ZXC123zxc@"));//login=zero =>is already in use
-        Assert.assertEquals("Incorrect first name | Невірне ім'я", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "123", "Shevchenko", "user1", "ZXC123zxc@"));
-        Assert.assertEquals("Incorrect last name | Невірна фамилія", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "123", "user1", "ZXC123zxc@"));
+        Assert.assertEquals("This login is already in used</br>Цей логін вже зареєстрований", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "Shevchenko", "zero", "ZXC123zxc@"));//login=zero =>is already in use
+        Assert.assertEquals("Incorrect first name</br>Невірне ім'я", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "123", "Shevchenko", "user1", "ZXC123zxc@"));
+        Assert.assertEquals("Incorrect last name</br>Невірна фамилія", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "123", "user1", "ZXC123zxc@"));
         Assert.assertEquals("", validator.newPersonValidate(personalInfoDao, new PersonalInfo(), "Taras", "Shevchenko", "djjsfjflljfsljfsdklsfj121232@@#$%", "ZXC123zxc@"));//login hasn't validation
     }
     @Test

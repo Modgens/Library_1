@@ -45,7 +45,7 @@ public class Validator {
         if (infoId != 0) {//if id==0   =>   there is empty entity
             if (userDao.hasInfoId(infoId)) {
                 if (userDao.getStatusFromPersonInfoID(infoId).equals("baned")) {
-                    map.replace(ERROR, "You are baned! | Ви забанені!");
+                    map.replace(ERROR, "You are baned!</br>Ви забанені!");
                     map.replace(STATUS, "failed");
                     return map;
                 }
@@ -62,7 +62,7 @@ public class Validator {
             map.replace(NAME, personalInfo.getFirstName() + " " + personalInfo.getLastName());
         } else {
             map.replace(STATUS, "failed");
-            map.replace(ERROR, "Wrong Username or Password | Неправильний логін або пароль");
+            map.replace(ERROR, "Wrong Username or Password</br>Неправильний логін або пароль");
         }
         return map;
     }
@@ -92,7 +92,7 @@ public class Validator {
             bookEntity.setName(title);
             bookEntity.setNameUa(titleUa);
         } else {
-            result.replace("error", "Incorrect book title! | Неправильний заголовок!");
+            result.replace("error", "Incorrect book title!</br>Неправильний заголовок!");
             return result;
         }
 
@@ -101,7 +101,7 @@ public class Validator {
         try {
             year = Integer.parseInt(yearStr);
         } catch (Exception e) {
-            result.replace("error", "Incorrect year input! | Неправильний рік!");
+            result.replace("error", "Incorrect year input!</br>Неправильний рік!");
             return result;
         }
         Calendar calendar = new GregorianCalendar();
@@ -109,7 +109,7 @@ public class Validator {
         if (year >= 1800 && year <= current_Year) {
             bookEntity.setDateOfPublication(year);
         } else {
-            result.replace("error", "Year must be between 1800 year - now ! | Рік має бути від 1800 року - теперішнього!");
+            result.replace("error", "Year must be between 1800 year - now !</br>Рік має бути від 1800 року - теперішнього!");
             return result;
         }
 
@@ -126,7 +126,7 @@ public class Validator {
                 bookEntity.setAuthorId(authorDao.idFromName(author, authorUa));
             }
         } else {
-            result.replace("error", "Incorrect author name! | Неправильне ім'я автора");
+            result.replace("error", "Incorrect author name!</br>Неправильне ім'я автора");
             return result;
         }
 
@@ -143,7 +143,7 @@ public class Validator {
                 bookEntity.setPublicationId(publisherDao.idFromName(publisher, publisherUa));
             }
         } else {
-            result.replace("error", "Incorrect publisher name! | Неправильна назва публікатора!");
+            result.replace("error", "Incorrect publisher name!</br>Неправильна назва публікатора!");
             return result;
         }
 
@@ -152,13 +152,13 @@ public class Validator {
         try {
             count = Integer.parseInt(countStr);
         } catch (Exception e) {
-            result.replace("error", "In count should be only numbers! | У кількості книг мають бути лише числа!");
+            result.replace("error", "In count should be only numbers!</br>У кількості книг мають бути лише числа!");
             return result;
         }
         if (("" + count).matches(COUNT_REGEX)) {
             bookEntity.setCount(count);
         } else {
-            result.replace("error", "In count should be only numbers! | У кількості книг мають бути лише числа!");
+            result.replace("error", "In count should be only numbers!</br>У кількості книг мають бути лише числа!");
             return result;
         }
 
@@ -170,12 +170,11 @@ public class Validator {
         String fileName;
         fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         if (!fileName.equals("")) {
-            if (fileName.matches(IMG_REGEX)) {
-                bookEntity.setImgName(fileName);
-            } else {
-                result.replace("error", "Incorrect image type! | Неправильний тип зображення!");
+            if (!fileName.matches(IMG_REGEX)) {
+                result.replace("error", "Incorrect image type!</br>Неправильний тип зображення!");
                 return result;
             }
+            bookEntity.setImgName(fileName);
             InputStream fileContent = filePart.getInputStream();
             File file = new File("C:/Users/Modgen/IdeaProjects/Library_1/src/main/webapp/book_images/" + fileName);
             BufferedImage imBuff = ImageIO.read(fileContent);
@@ -207,28 +206,29 @@ public class Validator {
 
         //subscribe validation
         if (subscriptionsDao.getFromUserDao(userId) == null) {
-            return "Sorry, but You should get subscription in your Personal Account | Вибачте, але Ви маєте отримати підписку в Особистому кабінеті";
+            return "Sorry, but You should get subscription in your Personal Account</br>Вибачте, але Ви маєте отримати підписку в Особистому кабінеті";
         }
 
         //count validation
         if (bookCount <= bookCountInOrder) {
-            return "Sorry, but we do not have this book in stock at the moment | Вибачте, але ми не маємо цієї книги на даний момент";
+            return "Sorry, but we do not have this book in stock at the moment</br>Вибачте, але ми не маємо цієї книги на даний момент";
         }
 
         //user already has one
         if (userOrdersDao.userAlreadyHasThisBook(bookId, userId)) {
-            return "You have already rented this book | Ви вже орендували цю книгу";
+            return "You have already rented this book</br>Ви вже орендували цю книгу";
         }
 
         //users can't have more than 10 book for one
         if (userOrdersDao.countOrderedOneUser(userId) >= 10) {
-            return "Sorry, but You can't order more than 10 book | Вибачте, але ви не можете замовити більше 10 книг одночасно";
+            return "Sorry, but You can't order more than 10 book</br>Вибачте, але ви не можете замовити більше 10 книг одночасно";
         }
 
         userOrders.setStatus(status);
         userOrders.setUserId(userId);
         userOrders.setBookId(bookId);
         userOrders.setStatusUa(ordersStatusUa);
+
 
         userOrdersDao.insert(userOrders);
         return null;
@@ -237,6 +237,7 @@ public class Validator {
     public String newPersonValidate(PersonalInfoDaoImpl personalInfoDao, PersonalInfo personalInfoEntity, String fName, String lName, String login, String password) {
         if (personalInfoDao == null || personalInfoEntity == null || fName == null || lName == null || login == null || password == null)
             throw new NullPointerException();
+
         //regex
         final String NAME_REGEX = "[а-яА-Яa-zA-Z]+";
         final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";//Пароль мусить мати як мінімум 1 цифру, 1 букву(Велику та Малу), 1 спец.символ(@#$%) і мати довжину від 8 до 20 символів
@@ -245,27 +246,28 @@ public class Validator {
         if (fName.matches(NAME_REGEX)) {
             personalInfoEntity.setFirstName(fName);
         } else {
-            return "Incorrect first name | Невірне ім'я";
+            return "Incorrect first name</br>Невірне ім'я";
         }
+
         //l_name validation
         if (lName.matches(NAME_REGEX)) {
             personalInfoEntity.setLastName(lName);
         } else {
-            return "Incorrect last name | Невірна фамилія";
+            return "Incorrect last name</br>Невірна фамилія";
         }
 
         //login validation
         if (personalInfoDao.getId(login) == 0) {
             personalInfoEntity.setLogin(login);
         } else {
-            return "This login is already in used | Цей логін вже зареєстрований";
+            return "This login is already in used</br>Цей логін вже зареєстрований";
         }
-        //password validation
 
+        //password validation
         if (password.matches(PASSWORD_REGEX)) {
             personalInfoEntity.setPassword(password);
         } else {
-            return "Password must have at least one numeric character, one lowercase character, one uppercase character, one special symbol (among @#$%) and have length between 8 and 20 | Пароль мусить мати як мінімум 1 цифру, 1 букву(Велику та Малу), 1 спец.символ(@#$%) і мати довжину від 8 до 20 символів";
+            return "Password must have at least one numeric character, one lowercase character, one uppercase character, one special symbol (among @#$%) and have length between 8 and 20</br>Пароль мусить мати як мінімум 1 цифру, 1 букву(Велику та Малу), 1 спец.символ(@#$%) і мати довжину від 8 до 20 символів";
         }
         return "";
     }

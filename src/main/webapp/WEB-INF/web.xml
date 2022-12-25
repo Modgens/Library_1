@@ -46,7 +46,7 @@
     </filter>
     <filter-mapping>
         <filter-name>BookFilter</filter-name>
-        <servlet-name>BookServlet</servlet-name>
+        <servlet-name>NewBookServlet</servlet-name>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -82,8 +82,8 @@
         <servlet-class>controller.BookPageServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookServlet</servlet-name>
-        <servlet-class>controller.BookServlet</servlet-class>
+        <servlet-name>NewBookServlet</servlet-name>
+        <servlet-class>controller.NewBookServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteBookServlet</servlet-name>
@@ -183,8 +183,8 @@
         <url-pattern>/delete_book</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookServlet</servlet-name>
-        <url-pattern>/book</url-pattern>
+        <servlet-name>NewBookServlet</servlet-name>
+        <url-pattern>/newBook</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookPageServlet</servlet-name>

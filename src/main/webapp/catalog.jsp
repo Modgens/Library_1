@@ -110,7 +110,7 @@
       %>
       <div class="col-md-8">
         <div class="card-body">
-          <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%></a></h4>
+          <h4 class="card-title"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getName()%></a></h4>
           <h6 class="author">Author: <%=list.get(i).getAuthor().getAuthorName()%></h6>
           <h6 class="author">Genre: <%=list.get(i).getGenre().getGenreName()%></h6>
           <h6 class="publication">Publication: <%=list.get(i).getPublisher().getPublisherName()%></h6>
@@ -142,7 +142,7 @@
       <%} else {%>
       <div class="col-md-8">
         <div class="card-body">
-          <h4 class="card-title"><a style="text-decoration: none" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getNameUa()%></a></h4>
+          <h4 class="card-title"><a style="text-decoration: none; color: black" href="${pageContext.request.contextPath}/book_page?book_id=<%=list.get(i).getId()%>"><%=list.get(i).getNameUa()%></a></h4>
           <h6 class="author">Автор: <%=list.get(i).getAuthor().getAuthorNameUa()%></h6>
           <h6 class="author">Жанр: <%=list.get(i).getGenre().getGenreNameUa()%></h6>
           <h6 class="publication">Публікатор: <%=list.get(i).getPublisher().getPublisherNameUa()%></h6>

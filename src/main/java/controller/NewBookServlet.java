@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 @MultipartConfig
-public class BookServlet extends HttpServlet {
-    static final Logger logger = Logger.getLogger(String.valueOf(BookServlet.class));
+public class NewBookServlet extends HttpServlet {
+    static final Logger logger = Logger.getLogger(String.valueOf(NewBookServlet.class));
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");

@@ -44,7 +44,7 @@
 
   <h5 style="color: red"><%=rb.getString("changeOnly")%></h5>
 
-  <form action="book" method="post" enctype="multipart/form-data">
+  <form action="newBook" method="post" enctype="multipart/form-data">
     <input type="hidden" name="book_id" value="<%=request.getParameter("book_id")%>">
     <div class="row">
       <div class="mb-3 col-6">
@@ -161,7 +161,7 @@
 <script type="text/javascript">
   var status = document.getElementById("status").value;
   if(status=="success") {
-    swal("Congrats", "Book Changed Successfully | Книга успішно зміненна", "success");
+    swal("Congrats", "Book Changed Successfully</br>Книга успішно зміненна", "success");
   }
   else if(status=="failed"){
     swal("Sorry", "<%=request.getAttribute("error")%>", "error");

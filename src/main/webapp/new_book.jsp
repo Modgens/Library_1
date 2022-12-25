@@ -41,7 +41,7 @@
 
 <h5><%=rb.getString("enterBookDate")%></h5>
 
-<form action="book" method="post" enctype="multipart/form-data">
+<form action="newBook" method="post" enctype="multipart/form-data">
   <div class="row">
     <div class="mb-3 col-6">
       <label for="titleInput" class="form-label"><%=rb.getString("ebTitleEn")%></label>
@@ -157,7 +157,7 @@
 <script type="text/javascript">
   var status = document.getElementById("status").value;
   if(status=="success") {
-    swal("Congrats", "Book Created Successfully | Книга Успішно Створена", "success");
+    swal("Congrats", "Book Created Successfully</br>Книга Успішно Створена", "success");
   }
   else if(status=="failed"){
     swal("Sorry", "<%=request.getAttribute("error")%>", "error");

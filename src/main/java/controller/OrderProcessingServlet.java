@@ -36,6 +36,10 @@ public class OrderProcessingServlet extends HttpServlet {
         if(userOrders.getStatus().equals("Wait for reading room")){
             userOrders.setStatus("In reading room");
             userOrders.setStatusUa("В читальному залі");
+            userOrders.setOrderDate(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+            userOrders.setDateToReturn(new java.sql.Date(Calendar.getInstance().getTimeInMillis()+86400000));
+            listOrder.setOrderDate(userOrders.getOrderDate());
+            listOrder.setDateToReturn(userOrders.getDateToReturn());
             listOrder.setStatusUa("В читальному залі");
             listOrder.setStatus("In reading room");
             userOrdersDao.update(userOrders);
@@ -73,7 +77,7 @@ public class OrderProcessingServlet extends HttpServlet {
             userOrders.setStatusUa("Оформлений");
             userOrders.setOrderDate(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
             logger.info("set order date - " + userOrders.getOrderDate());
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             try {
                 userOrders.setDateToReturn(new java.sql.Date(sdf.parse(date).getTime()));
                 logger.info("set date to return - " + userOrders.getDateToReturn());

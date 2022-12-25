@@ -1,5 +1,7 @@
 package controller;
 
+import service.SubscriptionChecking;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +32,8 @@ public class LoginServlet extends HttpServlet {
             if(role.equals("user")){
                 long user_id = (long) request.getAttribute("user_id");
                 session.setAttribute("user_id", user_id);
-                logger.info("set user id in session");
+                SubscriptionChecking.getInstance().check(user_id);
+                logger.info("set user id in session and check subscription");
             }
             dispatcher = request.getRequestDispatcher("catalog.jsp");
         }

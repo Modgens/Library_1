@@ -44,7 +44,7 @@
 <script type="text/javascript">
   var status = document.getElementById("status").value;
   if(status=="success") {
-    swal("Congrats", "Librarian Created Successfully | Бібліотекарь успішно створенний", "success");
+    swal("Congrats", "Librarian Created Successfully</br>Бібліотекарь успішно створенний", "success");
   }
   else if(status=="failed"){
     swal("Sorry", "<%=request.getAttribute("error")%>", "error");
