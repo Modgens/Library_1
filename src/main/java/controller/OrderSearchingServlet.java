@@ -63,5 +63,7 @@ public class OrderSearchingServlet extends HttpServlet {
         request.getSession().setAttribute(key, map.get(key));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(request.getParameter("page"));
         dispatcher.forward(request, response);
+        HashMap<Integer, String> map1 = new HashMap();
+        map1.put(1, "danylo");
     }
 }
